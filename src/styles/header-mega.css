@@ -1,0 +1,478 @@
+/*
+ * header-mega — the five mega menus, Products, Industries, Why Flash,
+ * Resources and Company (components/site-header-mega.tsx), one family.
+ *
+ * A compact panel joined to the underside of the floating bar: the bar's
+ * width, glass and edge, its top square against the bar and its lower corners
+ * rounded, so bar and panel read as one surface. Link columns (names only),
+ * a small featured card from 1280, and a slim closing row. At most 360px
+ * tall, and never shorter than the longest column's five links, so a menu
+ * with fewer links is the same size as the rest. The card is a 16:9 picture
+ * or, in its place, a figure tile (Why Flash's 99.6%), so every card has
+ * the same shape. Behind it the page is dimmed and lightly blurred
+ * (.mega-scrim).
+ *
+ * Resources and Company hold only a few links, so theirs are compact
+ * (`data-compact`): the same glass, edge, corners and type, but only as
+ * wide as their content and placed under their own trigger (`--mega-x`, set
+ * as the menu opens), with the card at every width and no demo link.
+ *
+ * Closed it is in the HTML but invisible and out of the tab order; it fades
+ * in over 200ms (`data-open`), and with reduced motion it just appears
+ * (header.css turns off transitions in the header).
+ *
+ * The bar's own blur is on its ::before (header.css), not the bar: a
+ * backdrop-filter on the bar would make it the panel's backdrop root, and
+ * the panel's blur would see nothing behind it.
+ */
+@layer components {
+  .site-header[data-theme='dark'] {
+    --hdr-panel-shadow: 0 28px 60px -20px rgb(4 8 24 / 60%);
+    --hdr-accent: var(--color-viz-gold);
+    --hdr-eyebrow: var(--color-viz-gold);
+  }
+  .site-header[data-theme='light'] {
+    --hdr-panel-shadow: 0 28px 60px -24px rgb(7 13 38 / 28%);
+    --hdr-accent: var(--color-brand-blue);
+    /* Gold dark enough to read on white glass. */
+    --hdr-eyebrow: var(--color-gold-on-light);
+  }
+
+  /* Trigger: a chevron that turns over, and a short accent line while open. */
+  .mega-trigger {
+    position: relative;
+  }
+  .mega-chevron {
+    transition: rotate 200ms var(--motion-ease);
+  }
+  .mega-trigger[aria-expanded='true'] .mega-chevron {
+    rotate: 180deg;
+  }
+  .mega-trigger::after {
+    content: '';
+    position: absolute;
+    bottom: 14px;
+    left: 0;
+    width: 16px;
+    height: 2px;
+    border-radius: 1px;
+    background-color: var(--hdr-accent);
+    opacity: 0;
+    transition: opacity 200ms;
+  }
+  .mega-trigger[aria-expanded='true'] {
+    opacity: 1;
+  }
+  .mega-trigger[aria-expanded='true']::after {
+    opacity: 1;
+  }
+  .mega-trigger:focus-visible {
+    outline: none;
+  }
+  .mega-trigger:focus-visible::before {
+    content: '';
+    position: absolute;
+    inset: 18px -6px;
+    border: 2px solid var(--hdr-accent);
+    border-radius: 8px;
+  }
+
+  /* The page behind an open menu: dimmed and lightly blurred, under the bar. */
+  .mega-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background-color: rgb(4 8 24 / 26%);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 200ms var(--motion-ease),
+      visibility 0s 200ms;
+  }
+  .mega-scrim[data-open] {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+      opacity 200ms var(--motion-ease),
+      visibility 0s;
+  }
+
+  /* Open, the bar squares its lower corners and the panel carries on from
+     them: one surface, the bar's own glass, edge and width. */
+  .site-header-bar:has(.mega-panel[data-open]:not([data-compact])) {
+    border-bottom-color: transparent;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  /* A compact panel joins the bar along its own width; the bar keeps its
+     rounded corners unless the panel runs out to one of them. */
+  .site-header-bar:has(.mega-panel[data-open][data-compact][data-flush-start]) {
+    border-bottom-left-radius: 0;
+  }
+  .site-header-bar:has(.mega-panel[data-open][data-compact][data-flush-end]) {
+    border-bottom-right-radius: 0;
+  }
+  .mega-panel {
+    position: absolute;
+    top: 100%;
+    right: -1px;
+    left: -1px;
+    max-height: min(360px, calc(100dvh - var(--site-header-h) - 24px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border: 1px solid var(--hdr-edge);
+    border-top-color: var(--hdr-rule);
+    border-radius: 0 0 20px 20px;
+    background-color: var(--hdr-ground);
+    box-shadow: var(--hdr-panel-shadow);
+    /* The shadow falls below and beside the panel, never up over the bar. */
+    clip-path: inset(0 -80px -80px -80px);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    backdrop-filter: blur(14px) saturate(1.4);
+    color: var(--hdr-muted);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: auto;
+    transition:
+      opacity 200ms var(--motion-ease),
+      visibility 0s 200ms;
+  }
+  .mega-panel[data-open] {
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity 200ms var(--motion-ease),
+      visibility 0s;
+  }
+  .mega-panel[data-compact] {
+    right: auto;
+    left: var(--mega-x, auto);
+    width: max-content;
+    max-width: min(640px, calc(100% + 2px));
+  }
+  .mega-panel[data-compact] .mega-body {
+    min-height: 0;
+  }
+  .mega-panel[data-compact] .mega-col {
+    flex: none;
+  }
+
+  /*
+   * min-height: the padding, a group label (14px + 8px) and five 30px links.
+   * Columns: `--mega-cols` equal slots (at least three, set on the element)
+   * across the room the card leaves, so Why Flash's and Resources' two
+   * columns and Company's one sit where Industries' first ones do, and the
+   * card stays at the right.
+   */
+  .mega-body {
+    --mega-gap: 28px;
+    --mega-card-room: 0px;
+    display: flex;
+    gap: var(--mega-gap);
+    align-items: flex-start;
+    min-height: calc(28px + 20px + 22px + 5 * 30px);
+    padding: 28px 28px 20px;
+    @media (width >= 1280px) {
+      --mega-card-room: calc(280px + var(--mega-gap));
+    }
+  }
+  .mega-col {
+    flex: 0 0
+      calc((100% - var(--mega-card-room) - (var(--mega-cols, 3) - 1) * var(--mega-gap)) / var(--mega-cols, 3));
+    min-width: 0;
+  }
+
+  .mega-label {
+    margin-bottom: 8px;
+    color: var(--hdr-eyebrow);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 14px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* A link: one line, the name only. Hover brightens it and slides an arrow in. */
+  .mega-link {
+    position: relative;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    width: fit-content;
+    padding: 5px 0;
+    border-radius: 6px;
+    color: var(--hdr-muted);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    white-space: nowrap;
+    transition: color 150ms;
+  }
+  /* Out of the flow, so the longest name still fits its column. */
+  .mega-arrow {
+    position: absolute;
+    left: calc(100% + 6px);
+    color: var(--hdr-eyebrow);
+    opacity: 0;
+    translate: -6px 0;
+    transition:
+      opacity 150ms,
+      translate 150ms var(--motion-ease);
+  }
+  .mega-link:hover,
+  .mega-link:focus-visible,
+  .mega-link[aria-current='page'] {
+    color: var(--hdr-fg);
+  }
+  .mega-link:hover .mega-arrow,
+  .mega-link:focus-visible .mega-arrow {
+    opacity: 1;
+    translate: 0 0;
+  }
+  /* The page you are on: a dot before its name. */
+  .mega-link[aria-current='page']::before {
+    content: '';
+    flex-shrink: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: var(--hdr-eyebrow);
+  }
+  .mega-panel a:focus-visible {
+    outline: 2px solid var(--hdr-accent);
+    outline-offset: 3px;
+  }
+
+  /* The featured card: a small image, three lines. From 1280 only; narrower
+     bars give its room to the link columns. */
+  .mega-feature {
+    display: none;
+    flex: 0 0 280px;
+    margin-left: auto;
+    width: 280px;
+    min-width: 0;
+    @media (width >= 1280px) {
+      display: block;
+    }
+  }
+  .mega-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-radius: 10px;
+  }
+  .mega-card-image {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    margin-bottom: 8px;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  .mega-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: scale 400ms var(--motion-ease);
+  }
+  .mega-card:hover .mega-card-image img {
+    scale: 1.04;
+  }
+  /* The figure tile: the picture's size and corners, a soft ground and the
+     panel's edge, the figure in gold over a small line. */
+  .mega-card-figure {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    aspect-ratio: 16 / 9;
+    margin-bottom: 8px;
+    padding: 0 20px;
+    border: 1px solid var(--hdr-rule);
+    border-radius: 10px;
+    background-color: var(--hdr-panel-hover);
+    transition: border-color 200ms;
+  }
+  .mega-card:hover .mega-card-figure {
+    border-color: var(--hdr-eyebrow);
+  }
+  .mega-card-figure-prefix {
+    color: var(--hdr-muted);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .mega-card-figure-value {
+    color: var(--hdr-eyebrow);
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 48px;
+    letter-spacing: -0.03em;
+  }
+  /* A longer value (an address) at a size that fits the tile on one line. */
+  .mega-card-figure[data-long] .mega-card-figure-value {
+    font-size: 19px;
+    line-height: 26px;
+    letter-spacing: -0.01em;
+  }
+  .mega-card-figure-caption {
+    margin-top: 4px;
+    color: var(--hdr-muted);
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .mega-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    padding-left: 2px;
+    border-radius: 50%;
+    background-color: rgb(255 255 255 / 90%);
+    color: var(--color-brand-navy);
+    translate: -50% -50%;
+    box-shadow: 0 6px 18px -6px rgb(4 8 24 / 50%);
+  }
+  .mega-card-eyebrow {
+    color: var(--hdr-eyebrow);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 14px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .mega-card-title {
+    overflow: hidden;
+    color: var(--hdr-fg);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 20px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .mega-card-cta {
+    color: var(--hdr-muted);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+    transition: color 150ms;
+  }
+  .mega-card:hover .mega-card-cta {
+    color: var(--hdr-fg);
+  }
+
+  /* A compact menu's card column: the eyebrow as a column label, then the card. */
+  .mega-feature-compact {
+    flex: none;
+    min-width: 0;
+  }
+  .mega-feature-compact .mega-card {
+    width: 200px;
+  }
+  .mega-feature-compact .mega-card-title {
+    display: -webkit-box;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  /* Company's sales card: the address, the promise, the way in. */
+  .mega-sales {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 14px 16px;
+    border: 1px solid var(--hdr-rule);
+    border-radius: 10px;
+    background-color: var(--hdr-panel-hover);
+  }
+  .mega-sales-email {
+    color: var(--hdr-eyebrow);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 22px;
+    white-space: nowrap;
+    text-underline-offset: 3px;
+  }
+  .mega-sales-email:hover {
+    text-decoration: underline;
+  }
+  .mega-sales-caption {
+    margin-top: 2px;
+    color: var(--hdr-muted);
+    font-size: 12px;
+    line-height: 16px;
+    white-space: nowrap;
+  }
+  .mega-sales-cta {
+    margin-top: 12px;
+    color: var(--hdr-muted);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18px;
+    transition: color 150ms;
+  }
+  .mega-sales-cta:hover,
+  .mega-sales-cta[aria-current='page'] {
+    color: var(--hdr-fg);
+  }
+
+  /* The slim closing row: the hub on the left, the demo on the right. */
+  .mega-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 28px;
+    padding: 12px 0 14px;
+    border-top: 1px solid var(--hdr-rule);
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .mega-foot-link {
+    color: var(--hdr-fg);
+    font-weight: 600;
+  }
+  .mega-foot-link span {
+    display: inline-block;
+    transition: translate 150ms var(--motion-ease);
+  }
+  .mega-foot-link:hover span {
+    translate: 3px 0;
+  }
+  .mega-foot-demo {
+    color: var(--hdr-muted);
+    font-weight: 500;
+    transition: color 150ms;
+  }
+  .mega-foot-demo:hover {
+    color: var(--hdr-fg);
+  }
+
+  /* Phones: the accordions in the full-screen menu. */
+  .mega-acc .mega-label {
+    padding-left: 0;
+    margin-bottom: 2px;
+  }
+  .mega-acc-link {
+    color: var(--hdr-muted);
+  }
+  .mega-acc-link:hover,
+  .mega-acc-link[aria-current='page'] {
+    color: var(--hdr-fg);
+  }
+  .mega-acc-link[aria-current='page'] {
+    font-weight: 600;
+  }
+}

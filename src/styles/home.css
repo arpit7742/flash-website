@@ -1,0 +1,1863 @@
+/*
+ * home — global styles for this area of the site.
+ *
+ * Components use these class names; no component carries inline style={...}.
+ * Classes sit in @layer components so a Tailwind utility on the same element
+ * still wins.
+ */
+
+@layer components {
+  /* Hero: the navy the copy reads on, and nowhere else, so the photo shows.
+     Beside the cards (from lg) it runs from the left and is gone by the
+     middle; stacked, the copy is the full width, so it runs down. */
+  .home-hero-grade-left {
+    background-image: linear-gradient(
+      in oklab 180deg,
+      oklab(17.1% -0.0005 -0.052 / 86%) 0%,
+      oklab(17.1% -0.0005 -0.052 / 84%) 50%,
+      oklab(17.1% -0.0005 -0.052 / 30%) 100%
+    );
+  }
+  @media (width >= 1024px) {
+    /* One even fade, gone by 60%. The stops trace an ease-in-out, so
+       neither end of it shows as a line. */
+    .home-hero-grade-left {
+      background-image: linear-gradient(
+        in oklab 90deg,
+        oklab(17.1% -0.0005 -0.052 / 70%) 0%,
+        oklab(17.1% -0.0005 -0.052 / 69%) 12%,
+        oklab(17.1% -0.0005 -0.052 / 64%) 22%,
+        oklab(17.1% -0.0005 -0.052 / 53%) 32%,
+        oklab(17.1% -0.0005 -0.052 / 36%) 41%,
+        oklab(17.1% -0.0005 -0.052 / 18%) 49%,
+        oklab(17.1% -0.0005 -0.052 / 6%) 55%,
+        oklab(17.1% -0.0005 -0.052 / 0%) 60%
+      );
+    }
+    /* The headline's gold words run past that, over the sky: a shadow that
+       hugs the letters keeps the gold's dark stops readable there. */
+    #hero-heading .text-gold-metallic {
+      filter: drop-shadow(0 0 2px oklab(17.1% -0.0005 -0.052 / 95%))
+        drop-shadow(0 0 8px oklab(17.1% -0.0005 -0.052 / 90%)) drop-shadow(0 0 18px oklab(17.1% -0.0005 -0.052 / 70%));
+    }
+  }
+
+  /* Hero: a light fade into the hero's bottom edge. */
+  .home-hero-grade-bottom {
+    background-image: linear-gradient(
+      in oklab 180deg,
+      oklab(17.1% -0.0005 -0.052 / 0%) 62%,
+      oklab(17.1% -0.0005 -0.052 / 55%) 100%
+    );
+  }
+
+  /* "What we predict" catalogue photos: one grade per card family. */
+  .home-catalogue-grade-standard {
+    background-image: linear-gradient(
+      in oklab 180deg,
+      oklab(17.1% -0.0005 -0.052 / 25%) 0%,
+      oklab(17.1% -0.0005 -0.052 / 80%) 100%
+    );
+  }
+  .home-catalogue-grade-delivery {
+    background-image: linear-gradient(
+      in oklab 180deg,
+      oklab(17.1% -0.0005 -0.052 / 70%) 0%,
+      oklab(17.1% -0.0005 -0.052 / 25%) 45%,
+      oklab(17.1% -0.0005 -0.052 / 88%) 100%
+    );
+  }
+  .home-catalogue-grade-intelligence {
+    background-image: linear-gradient(
+      in oklab 180deg,
+      oklab(17.1% -0.0005 -0.052 / 30%) 0%,
+      oklab(17.1% -0.0005 -0.052 / 88%) 100%
+    );
+  }
+
+  /* "How it works" step photos. */
+  .home-step-grade {
+    background-image: linear-gradient(
+      in oklab 180deg,
+      oklab(17.1% -0.0005 -0.052 / 45%) 0%,
+      oklab(17.1% -0.0005 -0.052 / 20%) 50%,
+      oklab(17.1% -0.0005 -0.052 / 70%) 100%
+    );
+  }
+
+  /* Industry card photos: clear top, navy under the card title. */
+  .home-industry-grade {
+    background-image: linear-gradient(
+      in oklab 180deg,
+      oklab(17.1% -0.0005 -0.052 / 15%) 40%,
+      oklab(17.1% -0.0005 -0.052 / 88%) 100%
+    );
+  }
+
+  /* Proof card photos. */
+  .home-proof-grade {
+    background-image: linear-gradient(
+      in oklab 180deg,
+      oklab(17.1% -0.0005 -0.052 / 30%) 0%,
+      oklab(17.1% -0.0005 -0.052 / 20%) 45%,
+      oklab(17.1% -0.0005 -0.052 / 96%) 100%
+    );
+  }
+
+  /* The bolt glyph, BOLT_PATH (components/bolt-path.ts), as a mask over
+     bg-gold-metallic (26x34 viewBox). */
+  .home-gold-bolt {
+    --home-bolt-mask: url("data:image/svg+xml;utf8,%3Csvg%20viewBox%3D'0%200%2026%2034'%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%3E%3Cpath%20d%3D'M19.6%200L0%2019.6h8.9L6.4%2034%2026%2012.6H15.8z'%2F%3E%3C%2Fsvg%3E");
+    -webkit-mask-image: var(--home-bolt-mask);
+    mask-image: var(--home-bolt-mask);
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+
+  /*
+   * Stats strip motion, on the shared .motion system (globals.css,
+   * components/motion.tsx). Cards stagger by 100ms, the default.
+   */
+  .stat-card {
+    --stat-ease: var(--motion-ease);
+    /* The diagrams' palette (components/stats/stat-tile.tsx), on a light ground. */
+    --stat-blue: #003399;
+    --stat-ink: #0b1322;
+    --stat-muted: #5f6b85;
+    --stat-track: #eef1f7;
+    --stat-rule: #cbd2de;
+    --stat-cell: #eef1f7;
+    --stat-tint-1: #dce4f5;
+    --stat-tint-2: #b9c8ec;
+    --stat-tint-3: #7f98d8;
+  }
+  /* The same diagrams on navy: the home page's strip. */
+  .stats-dark .stat-card {
+    --stat-blue: #6f9bff;
+    --stat-ink: #e2e5ea;
+    --stat-muted: #aeb8c7;
+    --stat-track: #1f2850;
+    --stat-rule: #3a4460;
+    --stat-cell: #121a3c;
+    --stat-tint-1: #1a2654;
+    --stat-tint-2: #2a3d7d;
+    --stat-tint-3: #4a6ac4;
+  }
+  /* Phones: one centred column, a 60px rule centred in the 40px gap. */
+  @media (width < 48rem) {
+    .stats-dark .stat-card + .stat-card {
+      position: relative;
+    }
+    .stats-dark .stat-card + .stat-card::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      width: 60px;
+      height: 1px;
+      translate: -50% 0;
+      background: rgb(255 255 255 / 0.14);
+    }
+  }
+
+  /* Overlays that only exist mid-animation; hidden in the final frame. */
+  .stat-hail-ping,
+  .stat-res-scan,
+  .stat-res-halo {
+    opacity: 0;
+  }
+  .stat-acc-dot {
+    transform-box: view-box;
+    transform-origin: 36px 36px;
+  }
+  .stat-acc-bar,
+  .stat-hail-lead {
+    transform-box: fill-box;
+    transform-origin: 0 50%;
+  }
+  .stat-hail-ping,
+  .stat-hail-stone,
+  .stat-ref-dots > circle,
+  .stat-ref-end,
+  .stat-res-site,
+  .stat-res-halo {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .stat-bars > rect {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+  }
+  .stat-res-pointer,
+  .stat-out-line {
+    stroke-dasharray: 1;
+  }
+  .stat-out-peak {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  /* 1 · 99.6%: the ring draws, the gold dot rides its tip, the bar fills. */
+  .motion[data-anim]:not([data-anim='reset']) .stat-acc-ring {
+    animation: stat-ring 1.3s var(--stat-ease) var(--motion-delay) both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .stat-acc-dot {
+    animation: stat-orbit 1.3s var(--stat-ease) var(--motion-delay) both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .stat-acc-bar {
+    animation: motion-grow-x 1.1s var(--stat-ease) calc(var(--motion-delay) + 150ms) both;
+  }
+
+  /* 5 hr: the probability curve draws from now to +5 h, the area under it
+     fades in, and the peak hour pops as the line passes it. */
+  .motion[data-anim]:not([data-anim='reset']) .stat-out-line {
+    animation: motion-draw 1.2s var(--stat-ease) var(--motion-delay) both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .stat-out-area {
+    animation: motion-fade 0.8s ease-out calc(var(--motion-delay) + 400ms) both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .stat-out-peak {
+    animation: motion-pop 0.45s ease-out calc(var(--motion-delay) + 600ms);
+  }
+
+  /* 2 · 55 min: the lead line draws from the alert to the stone, which pings. */
+  .motion[data-anim]:not([data-anim='reset']) .stat-hail-lead {
+    animation: motion-grow-x 1.1s var(--stat-ease) var(--motion-delay) both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .stat-hail-stone {
+    animation: motion-pop 0.45s ease-out calc(var(--motion-delay) + 1s);
+  }
+  .motion[data-anim]:not([data-anim='reset']) .stat-hail-ping {
+    animation: motion-ping 0.8s ease-out calc(var(--motion-delay) + 1s);
+  }
+
+  /* 3 · 2 min: dots light :00 to :20, the gold ring pulses, and the pass
+     repeats every 3.2s as a quiet tick along the line. */
+  .stat-ref-dots > circle:nth-child(2) {
+    --i: 1;
+  }
+  .stat-ref-dots > circle:nth-child(3) {
+    --i: 2;
+  }
+  .stat-ref-dots > circle:nth-child(4) {
+    --i: 3;
+  }
+  .stat-ref-dots > circle:nth-child(5) {
+    --i: 4;
+  }
+  .stat-ref-dots > circle:nth-child(6) {
+    --i: 5;
+  }
+  .stat-ref-dots > circle:nth-child(7) {
+    --i: 6;
+  }
+  .stat-ref-dots > circle:nth-child(8) {
+    --i: 7;
+  }
+  .stat-ref-dots > circle:nth-child(9) {
+    --i: 8;
+  }
+  .stat-ref-dots > circle:nth-child(10) {
+    --i: 9;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .stat-ref-dots > circle {
+    --dot-delay: calc(var(--motion-delay) + var(--i, 0) * 90ms);
+    animation:
+      motion-light 0.35s ease-out var(--dot-delay) both,
+      motion-tick 3.2s ease-out var(--dot-delay) infinite;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .stat-ref-end {
+    animation:
+      motion-light 0.35s ease-out calc(var(--motion-delay) + 900ms) both,
+      motion-pulse 3.2s ease-out calc(var(--motion-delay) + 1s) infinite;
+  }
+
+  /* 4 · 1×1 km: a highlight sweeps the grid and lands on your cell, the
+     pointer draws in; afterwards a soft gold halo breathes off the cell. */
+  .motion[data-anim]:not([data-anim='reset']) .stat-res-scan {
+    animation: stat-scan 1.1s ease-in-out var(--motion-delay);
+  }
+  .motion[data-anim]:not([data-anim='reset']) .stat-res-site {
+    animation: motion-pop 0.4s ease-out calc(var(--motion-delay) + 1s);
+  }
+  .motion[data-anim]:not([data-anim='reset']) .stat-res-pointer {
+    animation: motion-draw 0.45s var(--stat-ease) calc(var(--motion-delay) + 1.05s) both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .stat-res-halo {
+    animation: stat-halo 3.2s ease-out calc(var(--motion-delay) + 1.6s) infinite;
+  }
+
+  /* 5 · 15+: bars grow from the baseline, shortest to tallest. */
+  .stat-bars > rect:nth-child(2) {
+    --i: 1;
+  }
+  .stat-bars > rect:nth-child(3) {
+    --i: 2;
+  }
+  .stat-bars > rect:nth-child(4) {
+    --i: 3;
+  }
+  .stat-bars > rect:nth-child(5) {
+    --i: 4;
+  }
+  .stat-bars > rect:nth-child(6) {
+    --i: 5;
+  }
+  .stat-bars > rect:nth-child(7) {
+    --i: 6;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .stat-bars > rect {
+    animation: motion-grow-y 0.75s var(--stat-ease) calc(var(--motion-delay) + var(--i, 0) * 90ms) both;
+  }
+
+  /*
+   * Device mockup overlays (components/home/devices-overlay.tsx), on the
+   * shared .motion system. The loops (`motion-loop`) pause off screen; the
+   * gauge pieces play once when the block scrolls in. Their resting state is
+   * "gone", so with no JS or reduced motion only the screenshot shows.
+   */
+  .dev {
+    mix-blend-mode: normal;
+  }
+  .dev-hot {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    animation: dev-pulse 3s ease-in-out infinite;
+  }
+  .dev-hot:nth-child(2) {
+    animation-delay: -0.8s;
+  }
+  .dev-hot:nth-child(3) {
+    animation-delay: -1.6s;
+  }
+  .dev-hot:nth-child(4) {
+    animation-delay: -2.2s;
+  }
+  .dev-hot:nth-child(5) {
+    animation-delay: -1.1s;
+  }
+  .dev-sweep {
+    animation: dev-sweep 6s linear infinite;
+  }
+  /* Each strike has its own period and offset, so together they read as random. */
+  .dev-strike {
+    opacity: 0;
+    animation: dev-flash 5.3s linear infinite;
+  }
+  .dev-strike:nth-of-type(2) {
+    animation-duration: 6.7s;
+    animation-delay: 1.9s;
+  }
+  .dev-strike:nth-of-type(3) {
+    animation-duration: 4.9s;
+    animation-delay: 3.1s;
+  }
+  .dev-strike:nth-of-type(4) {
+    animation-duration: 7.3s;
+    animation-delay: 0.7s;
+  }
+  .dev-strike:nth-of-type(5) {
+    animation-duration: 6.1s;
+    animation-delay: 4.2s;
+  }
+  .dev-strike:nth-of-type(6) {
+    animation-duration: 5.7s;
+    animation-delay: 2.6s;
+  }
+  .dev-band {
+    opacity: 0.12;
+    animation: dev-band 6s ease-in-out infinite;
+  }
+  .dev-scrub-fill {
+    transform-box: fill-box;
+    transform-origin: 0 50%;
+    animation: motion-grow-x 6s linear infinite;
+  }
+  .dev-scrub-knob {
+    animation: dev-knob 6s linear infinite;
+  }
+  .dev-needle,
+  .dev-count {
+    opacity: 0;
+  }
+  .dev-needle {
+    transform-box: view-box;
+    transform-origin: 798px 332px;
+  }
+  .dev-cover {
+    transform-box: fill-box;
+    transform-origin: 50% 0;
+    transform: scaleY(0);
+  }
+  .motion[data-anim]:not([data-anim='reset']) .dev-needle {
+    animation: dev-needle 1.5s var(--motion-ease) both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .dev-count {
+    animation: dev-count 1.6s linear both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .dev-cover {
+    animation: dev-uncover 0.5s var(--motion-ease) calc(300ms + var(--dev-i, 0) * 60ms) both;
+  }
+  .dev-cover:nth-of-type(2) {
+    --dev-i: 1;
+  }
+  .dev-cover:nth-of-type(3) {
+    --dev-i: 2;
+  }
+  .dev-cover:nth-of-type(4) {
+    --dev-i: 3;
+  }
+  .dev-cover:nth-of-type(5) {
+    --dev-i: 4;
+  }
+  .dev-cover:nth-of-type(6) {
+    --dev-i: 5;
+  }
+  .dev-cover:nth-of-type(7) {
+    --dev-i: 6;
+  }
+  .dev-cover:nth-of-type(8) {
+    --dev-i: 7;
+  }
+  .dev-cover:nth-of-type(9) {
+    --dev-i: 8;
+  }
+  .dev-cover:nth-of-type(10) {
+    --dev-i: 9;
+  }
+  .dev-cover:nth-of-type(11) {
+    --dev-i: 10;
+  }
+  .dev-cover:nth-of-type(12) {
+    --dev-i: 11;
+  }
+
+  /*
+   * "Reactive detection. We're Proactive." (components/home/difference-headline.tsx),
+   * the home Flash difference heading and the Everyone else vs Flash H1.
+   *
+   * Size: from 1024px one line, as large as fits the content width (the
+   * line is ~15.7em wide: 74px at 1280, 78px from 1440); below, a line per
+   * phrase. "Reactive detection." is a column with its sticker on top, which
+   * does not widen the line.
+   *
+   * Motion, on the shared .motion system, as it scrolls in: "Reactive
+   * detection." fades and its sticker settles (700ms); "We're Proactive."
+   * rises (300ms), the gold underline draws left to right (900ms) and, as
+   * Then, while in view and the tab is visible
+   * (.motion-loop): the strike draws through the phrase (600ms), holds
+   * 2.5s, retracts (400ms), rests 1s, again; a light runs along the
+   * underline every 4s. Reduced motion, or no JavaScript: the strike and
+   * the underline are simply there, no loop and no sweep. Only opacity,
+   * transform, clip-path and the strike's dash move, so nothing shifts.
+   */
+  .diff {
+    font-size: clamp(36px, calc(10.5vw - 3px), 80px);
+    line-height: 1.04;
+    letter-spacing: -0.065em;
+    column-gap: 0.25em;
+    /* Wrapped (below 1024px): a little air between the two phrases. */
+    row-gap: 0.12em;
+  }
+  @media (width >= 1024px) {
+    .diff {
+      font-size: clamp(56px, calc(6.1vw - 4px), 78px);
+    }
+  }
+  .diff-part {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .diff-them,
+  .diff-us {
+    white-space: nowrap;
+  }
+
+  .diff-strike {
+    stroke-width: 0.14em;
+    stroke-dasharray: 1;
+    vector-effect: non-scaling-stroke;
+  }
+  .diff-strike-2 {
+    stroke-width: 0.046em;
+  }
+  .diff-tag-them {
+    transform-origin: 50% 50%;
+  }
+  /* Phones: "Everyone else" moves to the top-right corner of "detection.".
+     The phrase fills the line
+     there, so the sticker sits over the word's end, its bottom-left corner
+     0.14em into the line box less 4px: over the tops of "on." with the t and the i
+     clear, above the strike, and its right edge 0.4em past the word, inside
+     the screen at 360-414px. The phrase's top padding is the room the
+     sticker took in flow, so it stays clear of the eyebrow above. */
+  @media (width < 48rem) {
+    .diff-part:has(> .diff-tag-them) {
+      position: relative;
+      padding-top: 30px;
+    }
+    .diff-tag-them {
+      position: absolute;
+      right: -0.4em;
+      bottom: calc(1.04em - 0.14em + 4px);
+      transform-origin: 0 100%;
+    }
+  }
+  .diff-emph {
+    transform-origin: 0 80%;
+  }
+
+  /* "Proactive.": metallic gold, clear of the p's descender. */
+  .diff-underline {
+    position: absolute;
+    left: 0.02em;
+    right: 0;
+    top: calc(100% + 0.04em);
+    height: 4px;
+    overflow: hidden;
+    border-radius: 999px;
+  }
+  @media (width >= 640px) {
+    .diff-underline {
+      height: 6px;
+    }
+  }
+  .diff-sheen {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 40%;
+    background-image: linear-gradient(90deg, transparent, rgb(255 255 255 / 85%), transparent);
+    transform: translateX(-100%);
+  }
+
+  .motion[data-anim]:not([data-anim='reset']) .diff-them {
+    animation: motion-fade 0.4s var(--motion-ease) both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .diff-strike {
+    animation: diff-strike 4.5s linear 300ms infinite both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .diff-strike-2 {
+    animation-delay: 400ms;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .diff-tag-them {
+    animation: diff-settle-left 0.4s var(--motion-ease) 700ms both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .diff-us {
+    animation: motion-rise 0.6s var(--motion-ease) 300ms both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .diff-emph {
+    animation: diff-emph 0.7s var(--motion-ease) 300ms both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .diff-underline {
+    animation: motion-wipe 0.6s var(--motion-ease) 900ms both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .diff-sheen {
+    animation: diff-sheen 4s var(--motion-ease) 1700ms infinite both;
+  }
+
+  /* The home section's eyebrow pill (components/home/comparison.tsx): it
+     rises with the heading (500ms), then a light crosses it once, left to
+     right (800ms). Reduced motion, or no JavaScript: the pill is simply there. */
+  .diff-eyebrow {
+    position: relative;
+    overflow: hidden;
+  }
+  .diff-eyebrow-sheen {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 50%;
+    background-image: linear-gradient(100deg, transparent, rgb(255 255 255 / 85%), transparent);
+    transform: translateX(-100%);
+    pointer-events: none;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .diff-eyebrow {
+    animation: motion-rise 0.5s var(--motion-ease) var(--motion-delay) both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .diff-eyebrow-sheen {
+    animation: diff-eyebrow-sheen 0.8s ease-in-out calc(var(--motion-delay) + 500ms) both;
+  }
+
+  /*
+   * The platform band's flow steps (components/home/products.tsx), on the
+   * shared .motion system: once on scroll-in, cards rise 150ms apart and each
+   * arrow draws after its card.
+   */
+  .flow-step:nth-child(2) {
+    --flow-i: 1;
+  }
+  .flow-step:nth-child(3) {
+    --flow-i: 2;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .flow-card {
+    animation: motion-rise 0.6s var(--motion-ease) calc(var(--motion-delay) + var(--flow-i, 0) * 150ms) both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .flow-arrow {
+    animation: motion-wipe 0.45s var(--motion-ease) calc(var(--motion-delay) + var(--flow-i, 0) * 150ms + 350ms) both;
+  }
+
+  /*
+   * The platform (components/home/products.tsx, platform-spotlight.tsx).
+   *
+   * The markup is the finished section. Nothing here changes a box: every
+   * movement is a transform, an opacity or a filter.
+   *
+   *   reveal     once, on the shared .motion system: the eyebrow and the
+   *              heading rise a line at a time, the link fades in after; the
+   *              band fades up and its steps run the harness's .flow-*
+   *              motion; the cards ride the shared wave (.scroll-flow-card,
+   *              styles/parameter-card.css), so a row rises 70ms apart, left
+   *              to right, and stacked cards come one by one
+   *   spotlight  with a mouse, from 1024px: a soft light follows the cursor
+   *              across the grid (--spot-x / --spot-y, from
+   *              <PlatformSpotlight>) and each card's border brightens the
+   *              nearer the cursor is to it
+   *   hover      the shared .pc card: up 4px, photo to 1.04, arrow right
+   *
+   * Reduced motion: no reveal and no spotlight; the cards are simply there.
+   */
+  .platform-card {
+    background-color: color-mix(in srgb, var(--color-neutral-0) 3%, var(--color-brand-navy));
+    transition:
+      transform 350ms var(--motion-ease),
+      box-shadow 350ms var(--motion-ease),
+      border-color 350ms var(--motion-ease);
+  }
+  .platform-card:is(:hover, :focus-visible) {
+    border-color: rgb(255 255 255 / 25%);
+  }
+  .platform-steps {
+    --motion-delay: 250ms;
+  }
+
+  /* The spotlight's two layers, both off until the mouse is on the grid. */
+  .platform-spot-light,
+  .platform-cell::after {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 400ms var(--motion-ease);
+  }
+  .platform-spot-light {
+    z-index: 1;
+    display: none;
+  }
+  .platform-cell::after {
+    content: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .motion[data-anim]:not([data-anim='reset']) .platform-eyebrow {
+      animation: motion-rise 0.6s var(--motion-ease) var(--motion-delay) both;
+    }
+    .motion[data-anim]:not([data-anim='reset']) .platform-more {
+      animation: motion-fade 0.6s ease-out calc(var(--motion-delay) + 550ms) both;
+    }
+    .motion[data-anim]:not([data-anim='reset']) .platform-band {
+      animation: motion-rise 0.7s var(--motion-ease) var(--motion-delay) both;
+    }
+    /* The tour: the clip, then its text one stagger later. */
+    .motion[data-anim]:not([data-anim='reset']) .platform-tour-clip {
+      animation: motion-rise 0.7s var(--motion-ease) var(--motion-delay) both;
+    }
+    .motion[data-anim]:not([data-anim='reset']) .platform-tour-text {
+      animation: motion-rise 0.7s var(--motion-ease) calc(var(--motion-delay) + var(--motion-stagger)) both;
+    }
+
+    @media (hover: hover) and (pointer: fine) and (width >= 1024px) {
+      /* The light: a wide, faint pool of warm white, gone well before its
+         own edge, over the cards. */
+      .platform-spot-light {
+        display: block;
+        background-image: radial-gradient(
+          520px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+          rgb(255 238 190 / 11%) 0%,
+          rgb(255 255 255 / 4%) 40%,
+          transparent 72%
+        );
+      }
+      /* The border: a 1px ring over the card's own, lit from where the
+         cursor is in that card's box, so it falls off with distance and a
+         card the cursor is far from stays as it was. It rides up with the
+         card's hover lift. */
+      .platform-cell::after {
+        content: '';
+        z-index: 1;
+        padding: 1px;
+        border-radius: var(--radius-lg);
+        background-image: radial-gradient(
+          340px circle at var(--spot-x, -999px) var(--spot-y, -999px),
+          rgb(255 232 165 / 80%) 0%,
+          rgb(255 255 255 / 24%) 45%,
+          transparent 78%
+        );
+        -webkit-mask:
+          linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask:
+          linear-gradient(#000 0 0) content-box exclude,
+          linear-gradient(#000 0 0);
+        transition:
+          opacity 400ms var(--motion-ease),
+          transform 350ms var(--motion-ease);
+      }
+      .platform-cell:has(> .pc:hover)::after {
+        transform: translateY(-4px);
+      }
+      .platform-spot[data-spot] .platform-spot-light,
+      .platform-spot[data-spot] .platform-cell::after {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+/*
+ * Home hero (components/home/hero.tsx). The load choreography, the parallax
+ * and the lightning flash are the shared hero motion (styles/hero.css). This
+ * is what only the home hero's copy has; its product deck is
+ * styles/home-hero-deck.css.
+ */
+@layer components {
+  /* The paragraph's linked words (<LedeLink>): white over a 2px gold
+     underline of their own, a line box wide, that never breaks. On hover and
+     focus it thickens to 3px and brightens. */
+  .hero-lede-link {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .hero-lede-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.02em;
+    height: 2px;
+    border-radius: 1px;
+    background-color: var(--color-gold-300);
+    transform-origin: left;
+    transition:
+      height 150ms var(--motion-ease),
+      background-color 150ms var(--motion-ease);
+    pointer-events: none;
+  }
+  .hero-lede-link:hover::after,
+  .hero-lede-link:focus-visible::after {
+    height: 3px;
+    background-color: var(--color-gold-100);
+  }
+  .hero-lede-link:focus-visible {
+    outline-color: var(--color-gold-100);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* After the buttons, the demo arrow nudges. */
+    .hero-demo > span[aria-hidden] {
+      display: inline-block;
+      animation: hero-nudge 0.7s var(--hero-ease) 1700ms;
+    }
+    /* The underlines are hidden until <HeroLede> sets data-drawn (the first
+       30px of scroll, or 2.5s after the hero lands), then draw left to
+       right: "lightning" over 500ms, "hail" 150ms after it ends. Once. */
+    .hero-lede-link::after {
+      transform: scaleX(0);
+      transition:
+        transform 500ms var(--motion-ease),
+        height 150ms var(--motion-ease),
+        background-color 150ms var(--motion-ease);
+    }
+    .hero-lede-link ~ .hero-lede-link::after {
+      transition-delay: 650ms, 0ms, 0ms;
+    }
+    .hero-lede[data-drawn] .hero-lede-link::after {
+      transform: none;
+    }
+    /* Right: the label at 600ms; the deck follows (styles/home-hero-deck.css). */
+    .hero-surfaces-label {
+      animation: motion-fade 0.5s ease-out 600ms backwards;
+    }
+    .hero-caption {
+      animation: motion-fade 0.6s ease-out var(--hero-support-at) backwards;
+    }
+
+    /* Mouse: the deck moves the shared 10px; its front card does the leaning. */
+    .hero-surfaces {
+      translate: calc(var(--tilt-x, 0) * 10px) calc(var(--tilt-y, 0) * 10px);
+      transition: translate 0.8s var(--hero-ease);
+    }
+  }
+}
+
+@keyframes hero-nudge {
+  45% {
+    transform: translate(4px, -4px);
+  }
+}
+@keyframes stat-ring {
+  from {
+    stroke-dashoffset: 181.5;
+  }
+}
+@keyframes stat-orbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes stat-scan {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  10% {
+    opacity: 1;
+  }
+  40% {
+    transform: translate(100px, 0);
+  }
+  60% {
+    transform: translate(100px, 40px);
+  }
+  88% {
+    opacity: 1;
+    transform: translate(40px, 40px);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(40px, 40px);
+  }
+}
+@keyframes stat-halo {
+  0% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  45%,
+  100% {
+    opacity: 0;
+    transform: scale(1.8);
+  }
+}
+
+@keyframes motion-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@keyframes motion-wipe {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+
+/* The "Everyone else" sticker drops in over-tilted and settles to its own
+   tilt: the extra rotate here composes with its rotate-* utility. */
+@keyframes diff-settle-left {
+  from {
+    opacity: 0;
+    transform: translateY(-14px) rotate(-8deg);
+  }
+}
+@keyframes diff-emph {
+  from {
+    transform: scale(0.98);
+  }
+}
+/* One 4.5s round of the strike: draws left to right (600ms), holds 2.5s,
+   retracts to the right as it fades (400ms), rests 1s. */
+@keyframes diff-strike {
+  0% {
+    stroke-dashoffset: 1;
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  13.33% {
+    stroke-dashoffset: 0;
+  }
+  68.89% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+    animation-timing-function: ease-in;
+  }
+  77.78%,
+  100% {
+    stroke-dashoffset: -1;
+    opacity: 0;
+  }
+}
+/* A light runs along the underline in the first 0.9s of every 4s. */
+@keyframes diff-sheen {
+  0% {
+    transform: translateX(-100%);
+  }
+  22.5%,
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+/* Once across the eyebrow pill: from just off its left edge to past its right. */
+@keyframes diff-eyebrow-sheen {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(200%);
+  }
+}
+
+/* Device mockup overlays. */
+@keyframes dev-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.12);
+  }
+}
+@keyframes dev-sweep {
+  0% {
+    transform: translateX(0);
+  }
+  22%,
+  100% {
+    transform: translateX(560px);
+  }
+}
+@keyframes dev-flash {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  1.5% {
+    opacity: 1;
+  }
+  6% {
+    opacity: 0;
+  }
+}
+@keyframes dev-band {
+  0%,
+  100% {
+    opacity: 0.12;
+    transform: translate(0, 0);
+  }
+  50% {
+    opacity: 0.28;
+    transform: translate(5px, -4px);
+  }
+}
+@keyframes dev-knob {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(115px);
+  }
+}
+@keyframes dev-needle {
+  from {
+    opacity: 1;
+    transform: rotate(-40deg);
+  }
+  85% {
+    opacity: 1;
+    transform: rotate(21deg);
+  }
+  to {
+    opacity: 0;
+    transform: rotate(21deg);
+  }
+}
+@keyframes dev-count {
+  0%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes dev-uncover {
+  from {
+    transform: scaleY(1);
+  }
+}
+
+/*
+ * "How it works" (components/home/how-timeline.tsx).
+ *
+ * Static by default: stacked cards, photo then title then text. That is what
+ * phones get, and also reduced motion and no JavaScript at any width. From
+ * 1024px, with motion and scripting, the same markup becomes the scroll
+ * timeline: the steps on the left, one sticky photo panel on the right. The
+ * component's TIMELINE query is the media query below; keep the two equal.
+ */
+@layer components {
+  .how {
+    --how-badge: 34px;
+    position: relative;
+  }
+  .how-steps {
+    display: grid;
+    gap: 40px;
+  }
+  .how-step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .how-step-shot {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 14px;
+    background-color: var(--color-brand-navy);
+  }
+  .how-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--how-badge);
+    height: var(--how-badge);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-brand-navy);
+    color: var(--color-text-on-dark);
+    font-size: var(--text-micro);
+    line-height: var(--leading-micro);
+    font-weight: 800;
+  }
+  .how-step-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .how-step-title {
+    color: var(--color-text);
+    font-size: var(--text-h4);
+    line-height: var(--leading-body);
+    font-weight: 800;
+    letter-spacing: var(--tracking-display);
+  }
+  .how-step-body {
+    color: var(--color-text-muted);
+    font-size: 15px;
+    line-height: 24px;
+  }
+  .how-line,
+  .how-panel-rail {
+    display: none;
+  }
+
+  @media (width >= 480px) {
+    .how-steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 24px;
+    }
+  }
+
+  /* Each card scrolls in on its own: the photo, then the words. */
+  @media (width < 1024px) {
+    .how-step[data-anim]:not([data-anim='reset']) > :is(.how-step-shot, .how-badge) {
+      animation: motion-rise 0.7s var(--motion-ease) var(--motion-delay) both;
+    }
+    .how-step[data-anim]:not([data-anim='reset']) > .how-step-copy {
+      animation: motion-rise 0.7s var(--motion-ease) calc(var(--motion-delay) + 120ms) both;
+    }
+  }
+
+  /* Desktop without the timeline: the four steps as static rows. */
+  @media (width >= 1024px) {
+    .how-steps {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 32px;
+    }
+    .how-step {
+      display: grid;
+      grid-template-columns: var(--how-badge) minmax(0, 1fr) minmax(0, 58%);
+      column-gap: 24px;
+      align-items: start;
+    }
+    .how-step-shot {
+      grid-area: 1 / 3;
+      aspect-ratio: 12 / 5;
+      border-radius: 20px;
+    }
+    .how-badge {
+      position: static;
+      grid-area: 1 / 1;
+    }
+    .how-step-copy {
+      grid-area: 1 / 2;
+      gap: 12px;
+    }
+    .how-step-title {
+      font-size: 28px;
+      line-height: 34px;
+    }
+    .how-step-body {
+      max-width: 44ch;
+      font-size: var(--text-body-l);
+      line-height: var(--leading-body-l);
+    }
+  }
+
+  /*
+   * The timeline, on the page's 12 columns: steps in 1-5, photo in 6-12, one
+   * gutter between. A step is 50vh and the photo 70vh, so the list is padded
+   * by half the difference: the panel sticks as step 1 reaches the middle of
+   * the photo and lets go as step 4 does, inside the section.
+   */
+  @media (width >= 1024px) and (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+    .how {
+      --how-step: clamp(320px, 50vh, 560px);
+      --how-panel: clamp(440px, 70vh, 780px);
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 24px;
+    }
+    .how-steps {
+      position: relative;
+      z-index: 1;
+      grid-area: 1 / 1 / auto / span 5;
+      row-gap: 0;
+      padding-block: calc((var(--how-panel) - var(--how-step)) / 2);
+    }
+    .how-step {
+      grid-template-columns: var(--how-badge) minmax(0, 1fr);
+      align-content: center;
+      height: var(--how-step);
+    }
+    .how-step-shot {
+      display: none;
+    }
+    /* Dimmed and set back 12px; the active step slides in from the left. */
+    .how-step-copy {
+      opacity: 0.35;
+      transform: translateX(-12px);
+      transition:
+        opacity 0.45s var(--motion-ease),
+        transform 0.6s var(--motion-ease);
+    }
+    .how-step:hover > .how-step-copy {
+      opacity: 0.7;
+    }
+    .how-step-copy:is([aria-current], :focus-within) {
+      opacity: 1;
+      transform: none;
+    }
+    /* The title is the control; its hit area is the whole step. */
+    .how-step-link {
+      font: inherit;
+      letter-spacing: inherit;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+    .how-step-link::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
+
+    .how-badge {
+      background-color: var(--color-neutral-0);
+      box-shadow: inset 0 0 0 1px var(--color-border-strong);
+      color: var(--color-text-muted);
+      transition:
+        background-color 0.45s var(--motion-ease),
+        box-shadow 0.45s var(--motion-ease),
+        color 0.45s var(--motion-ease);
+    }
+    .how-badge[data-state='done'] {
+      background-color: var(--color-brand-navy);
+      box-shadow: none;
+      color: var(--color-text-on-dark);
+    }
+    .how-badge[data-state='active'] {
+      background-color: var(--color-gold-metallic-mid);
+      background-image: linear-gradient(
+        in oklab 160deg,
+        var(--color-gold-metallic-mid) 0%,
+        var(--color-gold-300) 35%,
+        var(--color-gold-100) 50%,
+        var(--color-gold-button-mid) 70%,
+        var(--color-gold-button-edge) 100%
+      );
+      box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-gold-metallic-mid) 24%, transparent);
+      color: var(--color-brand-navy);
+    }
+
+    /* From the first badge to the last, as measured; no taller. The fill
+       follows the scroll. */
+    .how-line {
+      position: absolute;
+      top: var(--how-line-top, 0);
+      left: calc(var(--how-badge) / 2 - 1px);
+      display: block;
+      width: 2px;
+      height: var(--how-line-height, 0);
+      border-radius: 1px;
+      background-color: var(--color-border);
+    }
+    .how-line-fill {
+      display: block;
+      height: 100%;
+      border-radius: 1px;
+      transform: scaleY(var(--how-fill, 0));
+      transform-origin: 50% 0;
+    }
+
+    .how-panel-rail {
+      display: block;
+      grid-area: 1 / 6 / auto / span 7;
+    }
+    .how-panel {
+      position: sticky;
+      top: calc(50vh - var(--how-panel) / 2);
+      height: var(--how-panel);
+      overflow: hidden;
+      border-radius: 20px;
+      background-color: var(--color-brand-navy);
+    }
+    /* The incoming photo fades in over the outgoing one, which holds until
+       it is covered, so the panel never dips to navy between two photos. */
+    .how-shot {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.03);
+      transition:
+        opacity 0s 0.7s,
+        transform 0s 0.7s;
+    }
+    .how-shot[data-on] {
+      z-index: 1;
+      opacity: 1;
+      transform: none;
+      transition:
+        opacity 0.7s var(--motion-ease),
+        transform 1.1s var(--motion-ease);
+    }
+    /* Taller than the panel by the drift, so no edge ever shows. */
+    .how-shot-drift {
+      position: absolute;
+      inset: -14px 0;
+      transform: translateY(var(--how-drift, 0));
+      will-change: transform;
+    }
+
+    .how-count {
+      position: absolute;
+      z-index: 2;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      background-color: color-mix(in srgb, var(--color-brand-navy) 72%, transparent);
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      color: var(--color-text-on-dark-muted);
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 700;
+      letter-spacing: var(--tracking-label);
+    }
+    .how-count-window {
+      height: 16px;
+      overflow: hidden;
+      color: var(--color-viz-gold);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+    .how-count-roll {
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.5s var(--motion-ease);
+    }
+    .how-count[data-step='1'] .how-count-roll {
+      transform: translateY(-16px);
+    }
+    .how-count[data-step='2'] .how-count-roll {
+      transform: translateY(-32px);
+    }
+    .how-count[data-step='3'] .how-count-roll {
+      transform: translateY(-48px);
+    }
+  }
+
+  /*
+   * Live overlays (components/home/how-overlays.tsx), in the photo's own
+   * 1376x768 space. Hidden until the step is "on": the active photo in the
+   * panel, or a card in view on a phone. The loops are `motion-loop`s, so
+   * they also pause off screen, and reduced motion never shows them.
+   */
+  .how-fx {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease-out 0.2s;
+  }
+  :is(.how-shot[data-on] > .how-shot-drift, .how-step[data-inview] > .how-step-shot) > .how-fx {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .how-fx {
+      display: none;
+    }
+  }
+
+  /* 01 Radar dome: a faint ring and a sweep turning about the dome. */
+  .how-fx-ring,
+  .how-fx-ping {
+    fill: none;
+    stroke: var(--color-viz-gold);
+    stroke-width: 1.5;
+    stroke-opacity: 0.32;
+  }
+  .how-fx-ring-far {
+    stroke-opacity: 0.16;
+  }
+  .how-fx-ping {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .how-fx-sweep {
+    transform-box: view-box;
+    transform-origin: 688px 334px;
+  }
+  .how-fx-wedge {
+    fill: var(--color-viz-gold);
+  }
+  .how-fx-beam {
+    stroke: var(--color-viz-gold);
+    stroke-width: 1.5;
+    stroke-opacity: 0.4;
+  }
+  :is(.how-shot[data-on], .how-step[data-inview]) .how-fx-sweep {
+    animation: stat-orbit 7s linear infinite;
+  }
+  :is(.how-shot[data-on], .how-step[data-inview]) .how-fx-ping {
+    animation: how-ping 3.5s ease-out infinite;
+  }
+
+  /* 02 Signals: particles drifting along the gold streams. */
+  .how-fx-dot {
+    fill: var(--color-gold-100);
+    opacity: 0;
+    offset-rotate: 0deg;
+    filter: drop-shadow(0 0 6px var(--color-viz-gold));
+  }
+  .how-fx-stream-a > .how-fx-dot {
+    --how-drift: 9s;
+    offset-path: path('M120 400C300 430 480 320 640 350S860 520 1010 450S1180 260 1290 380');
+  }
+  .how-fx-stream-b > .how-fx-dot {
+    --how-drift: 11s;
+    offset-path: path('M120 640C330 640 470 560 650 540S900 500 1060 520S1230 500 1290 470');
+  }
+  .how-fx-stream-c > .how-fx-dot {
+    --how-drift: 7s;
+    offset-path: path('M130 130C260 90 400 170 470 270S560 360 640 350');
+  }
+  .how-fx-dot:nth-child(2) {
+    --i: 1;
+  }
+  .how-fx-dot:nth-child(3) {
+    --i: 2;
+  }
+  .how-fx-dot:nth-child(4) {
+    --i: 3;
+  }
+  :is(.how-shot[data-on], .how-step[data-inview]) .how-fx-dot {
+    /* A negative delay spreads the particles along the stream from the start. */
+    animation: how-drift var(--how-drift) linear calc(var(--i, 0) * var(--how-drift) / -4) infinite;
+  }
+
+  /* 03 Storm: the 1x1 km grid over the land, one cell lit. */
+  .how-fx-grid > line {
+    stroke: var(--color-neutral-0);
+    stroke-width: 1.25;
+    stroke-opacity: 0.24;
+    vector-effect: non-scaling-stroke;
+  }
+  .how-fx-cell {
+    fill: var(--color-viz-gold);
+    fill-opacity: 0.55;
+    stroke: var(--color-viz-gold);
+    stroke-width: 2;
+    filter: drop-shadow(0 0 12px var(--color-viz-gold));
+  }
+  :is(.how-shot[data-on], .how-step[data-inview]) .how-fx-grid {
+    animation: motion-fade 1.4s ease-out 0.3s both;
+  }
+  :is(.how-shot[data-on], .how-step[data-inview]) .how-fx-cell {
+    animation: how-cell 2.6s ease-in-out infinite;
+  }
+
+  /* 04 Siren: rings leaving the horn, and the beacon's glow. */
+  .how-fx-alert {
+    fill: none;
+    stroke: var(--color-viz-gold);
+    stroke-width: 3;
+    stroke-linecap: round;
+    opacity: 0;
+    transform-box: view-box;
+    transform-origin: 581px 330px;
+  }
+  .how-fx-alert:nth-child(2) {
+    --i: 1;
+  }
+  .how-fx-alert:nth-child(3) {
+    --i: 2;
+  }
+  .how-fx-glow {
+    opacity: 0.45;
+    mix-blend-mode: screen;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .how-fx-glow-stop {
+    stop-color: var(--color-viz-gold);
+  }
+  :is(.how-shot[data-on], .how-step[data-inview]) .how-fx-alert {
+    animation: motion-ping 2.7s ease-out calc(var(--i, 0) * 0.9s) infinite;
+  }
+  :is(.how-shot[data-on], .how-step[data-inview]) .how-fx-glow {
+    animation: dev-pulse 2.7s ease-in-out infinite;
+  }
+}
+
+@keyframes how-ping {
+  from {
+    opacity: 0.7;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}
+@keyframes how-drift {
+  from {
+    opacity: 0;
+    offset-distance: 0%;
+  }
+  12%,
+  85% {
+    opacity: 0.95;
+  }
+  to {
+    opacity: 0;
+    offset-distance: 100%;
+  }
+}
+@keyframes how-cell {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/*
+ * Industries (components/home/industries.tsx, industry-panels.tsx): six photo
+ * panels, one open. The open panel is the one whose radio is checked, so the
+ * states below need no JavaScript.
+ *
+ *   below lg  a stacked accordion: closed rows 64px, the open one --ind-open
+ *   lg up     a row 520px tall: each closed panel takes one share of the
+ *             width, the open one --ind-grow (5) shares; with six panels that
+ *             is half each way. --ind-n is the panel count, read off the list.
+ *
+ * Both sizes are fixed and the closing and opening panel ease on the same
+ * curve, so the list keeps its height and nothing outside the section moves.
+ * The photo and the copy are laid out at the open size from the start: the
+ * panel only uncovers them, so neither rescales nor rewraps on the way.
+ */
+@layer components {
+  .ind-list {
+    --ind-gap: 8px;
+    --ind-closed: 64px;
+    --ind-open: 520px;
+    --ind-pad: 20px;
+    --ind-ms: 500ms;
+    --ind-n: 6;
+    --ind-grow: 5;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ind-gap);
+    @media (width >= 390px) {
+      --ind-open: 460px;
+    }
+    @media (width >= 480px) {
+      --ind-open: 440px;
+    }
+    @media (width >= 1024px) {
+      --ind-gap: 12px;
+      --ind-pad: 24px;
+      /* The open panel's width, and a closed one's: their shares of the row less the gaps. */
+      --ind-open-w: calc(
+        (100cqi - var(--ind-gap) * (var(--ind-n) - 1)) * var(--ind-grow) / (var(--ind-grow) + var(--ind-n) - 1)
+      );
+      --ind-closed-w: calc(var(--ind-open-w) / var(--ind-grow));
+      container-type: inline-size;
+      flex-direction: row;
+      height: 520px;
+    }
+    @media (width >= 1440px) {
+      --ind-pad: 32px;
+    }
+  }
+
+  .ind-list:has(> .ind-panel:nth-child(3):last-child) {
+    --ind-n: 3;
+  }
+  .ind-list:has(> .ind-panel:nth-child(4):last-child) {
+    --ind-n: 4;
+  }
+  .ind-list:has(> .ind-panel:nth-child(5):last-child) {
+    --ind-n: 5;
+  }
+  .ind-panel {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    height: var(--ind-closed);
+    border-radius: var(--radius-lg);
+    background: var(--color-brand-navy);
+    transition: height var(--ind-ms) ease-out;
+    &:has(.ind-radio:checked) {
+      height: var(--ind-open);
+    }
+    &:has(.ind-radio:focus-visible) {
+      outline: 2px solid var(--color-alert-info);
+      outline-offset: 2px;
+    }
+    @media (width >= 1024px) {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 100%;
+      transition: flex-grow var(--ind-ms) ease-out;
+      &:has(.ind-radio:checked) {
+        flex-grow: var(--ind-grow);
+        height: 100%;
+      }
+    }
+  }
+
+  /* The photo, at the open panel's size and centred on the panel. */
+  .ind-photo {
+    position: absolute;
+    z-index: -1;
+    inset-inline: 0;
+    top: 50%;
+    height: var(--ind-open);
+    translate: 0 -50%;
+    @media (width >= 1024px) {
+      inset-block: 0;
+      left: 50%;
+      right: auto;
+      width: var(--ind-open-w);
+      height: auto;
+      translate: -50% 0;
+    }
+  }
+
+  /* Closed: the photo sits under navy. Open: it clears, and a grade holds the copy. */
+  .ind-shade,
+  .ind-grade {
+    position: absolute;
+    inset: 0;
+    transition: opacity var(--ind-ms) ease-out;
+  }
+  .ind-shade {
+    background-image: linear-gradient(
+      in oklab 90deg,
+      oklab(17.1% -0.0005 -0.052 / 88%) 0%,
+      oklab(17.1% -0.0005 -0.052 / 55%) 100%
+    );
+    @media (width >= 1024px) {
+      background-image: linear-gradient(
+        in oklab 180deg,
+        oklab(17.1% -0.0005 -0.052 / 55%) 0%,
+        oklab(17.1% -0.0005 -0.052 / 62%) 45%,
+        oklab(17.1% -0.0005 -0.052 / 92%) 100%
+      );
+    }
+  }
+  .ind-grade {
+    opacity: 0;
+    background-image: linear-gradient(
+      in oklab 180deg,
+      oklab(17.1% -0.0005 -0.052 / 45%) 0%,
+      oklab(17.1% -0.0005 -0.052 / 30%) 30%,
+      oklab(17.1% -0.0005 -0.052 / 95%) 100%
+    );
+    @media (width >= 1024px) {
+      background-image: linear-gradient(
+        in oklab 180deg,
+        oklab(17.1% -0.0005 -0.052 / 10%) 0%,
+        oklab(17.1% -0.0005 -0.052 / 35%) 38%,
+        oklab(17.1% -0.0005 -0.052 / 94%) 100%
+      );
+    }
+  }
+  .ind-panel:has(.ind-radio:checked) {
+    & > .ind-shade {
+      opacity: 0;
+    }
+    & > .ind-grade {
+      opacity: 1;
+    }
+  }
+
+  /* The name: along the row in the accordion, set vertically up a closed panel in the row. */
+  .ind-name {
+    position: absolute;
+    top: 0;
+    left: var(--ind-pad);
+    display: flex;
+    align-items: center;
+    height: var(--ind-closed);
+    white-space: nowrap;
+    @media (width >= 1024px) {
+      top: auto;
+      bottom: 28px;
+      left: calc(var(--ind-closed-w) / 2);
+      height: auto;
+      writing-mode: vertical-rl;
+      rotate: 180deg;
+      translate: -50% 0;
+      transition: opacity 0.3s ease-out 0.2s;
+    }
+  }
+  @media (width >= 1024px) {
+    .ind-panel:has(.ind-radio:checked) > .ind-name {
+      opacity: 0;
+      transition: opacity 0.15s ease-out;
+    }
+  }
+  .ind-plus {
+    position: absolute;
+    top: 24px;
+    right: var(--ind-pad);
+    color: var(--color-text-on-dark);
+    transition: opacity 0.2s ease-out;
+    @media (width >= 1024px) {
+      display: none;
+    }
+  }
+  .ind-panel:has(.ind-radio:checked) > .ind-plus {
+    opacity: 0;
+  }
+
+  .ind-hit {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+  }
+
+  /*
+   * The copy, pinned to the panel's foot at the open width, with room left
+   * under it for the link's line (24px and the gap). Closed, it is out of the
+   * accessibility tree (visibility), and leaves at once; open, its pieces
+   * fade up 80ms apart once the panel is moving.
+   */
+  .ind-body {
+    --ind-body-gap: 14px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--ind-body-gap);
+    width: 100%;
+    padding: var(--ind-pad);
+    padding-bottom: calc(var(--ind-pad) + 24px + var(--ind-body-gap));
+    visibility: hidden;
+    pointer-events: none;
+    transition: visibility 0s 0.15s;
+    @media (width >= 1024px) {
+      --ind-body-gap: 16px;
+      width: var(--ind-open-w);
+    }
+  }
+
+  /*
+   * The panel's link: it covers the whole open panel, over the copy, so the
+   * panel is one link and a click anywhere on it goes to the industry page.
+   * Its words sit at the foot, in the room the copy leaves. Closed, it is out
+   * of the tab order and takes no clicks, so the label under it opens the panel.
+   */
+  .ind-go {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: var(--ind-pad);
+    visibility: hidden;
+    pointer-events: none;
+    transition: visibility 0s 0.15s;
+    &:focus-visible {
+      outline: 2px solid var(--color-alert-info);
+      outline-offset: -2px;
+    }
+  }
+  .ind-rise {
+    opacity: 0;
+    translate: 0 12px;
+    transition:
+      opacity 0.15s ease-out,
+      translate 0s 0.15s;
+    &:nth-child(2) {
+      --ind-step: 1;
+    }
+    &:nth-child(3) {
+      --ind-step: 2;
+    }
+    &:nth-child(4) {
+      --ind-step: 3;
+    }
+    &:nth-child(5) {
+      --ind-step: 4;
+    }
+  }
+  .ind-panel:has(.ind-radio:checked) > .ind-go {
+    pointer-events: auto;
+  }
+  .ind-panel:has(.ind-radio:checked) > :is(.ind-body, .ind-go) {
+    visibility: visible;
+    transition-delay: 0s;
+    & > .ind-rise {
+      --ind-at: calc(200ms + var(--ind-step, 0) * 80ms);
+      opacity: 1;
+      translate: 0 0;
+      transition:
+        opacity 0.45s var(--motion-ease) var(--ind-at),
+        translate 0.45s var(--motion-ease) var(--ind-at);
+    }
+  }
+
+  /*
+   * The 5s clock: a gold bar along the open panel's top edge, in the row
+   * layout only. industry-panels.tsx sets data-auto (run | paused) and opens
+   * the next panel when the fill's animation ends.
+   */
+  .ind-bar {
+    position: absolute;
+    inset: 0 0 auto;
+    display: none;
+    height: 3px;
+    background: color-mix(in srgb, var(--color-neutral-0) 22%, transparent);
+    opacity: 0;
+    transition: opacity 0.2s ease-out;
+  }
+  .ind-bar-fill {
+    display: block;
+    height: 100%;
+    background: var(--color-viz-gold);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+  }
+  @media (width >= 1024px) and (prefers-reduced-motion: no-preference) {
+    .ind-bar {
+      display: block;
+    }
+    .ind-panels[data-auto] .ind-panel:has(.ind-radio:checked) > .ind-bar {
+      opacity: 1;
+      & > .ind-bar-fill {
+        animation: ind-progress 5s linear both;
+      }
+    }
+    .ind-panels[data-auto='paused'] .ind-bar-fill {
+      animation-play-state: paused !important;
+    }
+  }
+
+  /* Scroll-in: heading, then intro, then the panels slide up 70ms apart. */
+  .motion[data-anim]:not([data-anim='reset']) > div > .ind-head {
+    animation: motion-rise 0.6s var(--motion-ease) var(--motion-delay) both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) > div > .ind-intro {
+    animation: motion-rise 0.6s var(--motion-ease) calc(var(--motion-delay) + 100ms) both;
+  }
+  /* The same, for a header drawn by <SectionHeader className="ind-headrow"> (Lightning page). */
+  .motion[data-anim]:not([data-anim='reset']) > .ind-headrow > :first-child {
+    animation: motion-rise 0.6s var(--motion-ease) var(--motion-delay) both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) > .ind-headrow > :nth-child(2) {
+    animation: motion-rise 0.6s var(--motion-ease) calc(var(--motion-delay) + 100ms) both;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .ind-panel {
+    animation: ind-slide 0.7s var(--motion-ease) calc(var(--motion-delay) + 250ms + var(--ind-i, 0) * 70ms) both;
+  }
+  .ind-panel:nth-child(2) {
+    --ind-i: 1;
+  }
+  .ind-panel:nth-child(3) {
+    --ind-i: 2;
+  }
+  .ind-panel:nth-child(4) {
+    --ind-i: 3;
+  }
+  .ind-panel:nth-child(5) {
+    --ind-i: 4;
+  }
+  .ind-panel:nth-child(6) {
+    --ind-i: 5;
+  }
+
+  /* Reduced motion: panels open at once, the copy is simply there. */
+  @media (prefers-reduced-motion: reduce) {
+    .ind-panel,
+    .ind-panel * {
+      transition: none !important;
+    }
+  }
+}
+
+@keyframes ind-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes ind-slide {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+}

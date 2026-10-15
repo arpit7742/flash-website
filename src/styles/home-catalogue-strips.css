@@ -1,0 +1,194 @@
+/*
+ * Home "What we predict" on phones (below md): the eight catalogue cards as
+ * photo-strip accordion rows (components/home/catalogue-strips.tsx). Closed,
+ * a row is a 68px strip: the card's photo on the right, fading into navy
+ * under the text. Open, the strip grows, the photo fills it, and a white
+ * panel with the card's items drops below. Desktop keeps the card grid.
+ */
+@layer components {
+  .pacc {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .pacc-row {
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: var(--color-neutral-0);
+    box-shadow:
+      0 0 0 1px rgb(7 13 38 / 6%),
+      0 10px 24px -14px rgb(7 13 38 / 30%);
+  }
+
+  /* The strip: the whole of it is the button. */
+  .pacc-strip {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    height: 68px;
+    padding: 0 16px;
+    overflow: hidden;
+    background: var(--color-brand-navy);
+    color: var(--color-text-on-dark);
+    text-align: left;
+    cursor: pointer;
+    transition: height 300ms ease-out;
+  }
+  .pacc-strip:focus-visible {
+    outline: 2px solid var(--color-viz-gold);
+    outline-offset: -4px;
+    border-radius: var(--radius-lg);
+  }
+  .pacc-row[data-open] .pacc-strip {
+    height: 118px;
+  }
+
+  /* The photo: the right 68% closed, the whole strip open. */
+  .pacc-photo {
+    position: absolute;
+    inset: 0 0 0 32%;
+    transition: left 300ms ease-out;
+  }
+  .pacc-row[data-open] .pacc-photo {
+    left: 0;
+  }
+  .pacc-photo > img {
+    object-fit: cover;
+    object-position: 50% var(--pacc-y, 50%);
+  }
+  /* Closed: navy under the text, clearing toward the photo. */
+  .pacc-fade {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+      90deg,
+      var(--color-brand-navy) 0%,
+      var(--color-brand-navy) 38%,
+      rgb(7 13 38 / 82%) 62%,
+      rgb(7 13 38 / 30%) 100%
+    );
+    transition: opacity 300ms ease-out;
+  }
+  /* Open: dark from the bottom up, where the text now sits. */
+  .pacc-grade {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(0deg, rgb(7 13 38 / 94%) 0%, rgb(7 13 38 / 74%) 50%, rgb(7 13 38 / 22%) 100%);
+    opacity: 0;
+    transition: opacity 300ms ease-out;
+  }
+  .pacc-row[data-open] .pacc-fade {
+    opacity: 0;
+  }
+  .pacc-row[data-open] .pacc-grade {
+    opacity: 1;
+  }
+
+  /* Intelligence: no photo. Navy, a soft glow, the logo. */
+  .pacc-glow {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(60% 140% at 84% 50%, rgb(230 186 45 / 20%) 0%, rgb(230 186 45 / 0%) 70%),
+      radial-gradient(50% 120% at 60% 110%, rgb(111 155 255 / 20%) 0%, rgb(111 155 255 / 0%) 70%);
+  }
+  .pacc-logo {
+    position: absolute;
+    top: 50%;
+    right: 52px;
+    translate: 0 -50%;
+  }
+
+  .pacc-text {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: 3px;
+    text-shadow: 0 1px 6px rgb(7 13 38 / 70%);
+    transition: translate 300ms ease-out;
+  }
+  /* Open, the text rides down to the foot of the taller strip. */
+  .pacc-row[data-open] .pacc-text {
+    translate: 0 25px;
+  }
+  .pacc-chevron {
+    position: relative;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    /* Holds the chevron's edge over a bright photo. */
+    filter: drop-shadow(0 0 4px rgb(7 13 38 / 90%));
+    transition:
+      rotate 300ms ease-out,
+      translate 300ms ease-out;
+  }
+  .pacc-row[data-open] .pacc-chevron {
+    rotate: 180deg;
+    translate: 0 25px;
+  }
+
+  /* The panel. Its height is the content's, measured into --pacc-h
+     (catalogue-strips.tsx); before that, and without JavaScript, auto. */
+  .pacc-panel {
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition:
+      height 300ms ease-out,
+      visibility 0s 300ms;
+  }
+  .pacc-row[data-open] .pacc-panel {
+    height: var(--pacc-h, auto);
+    visibility: visible;
+    transition:
+      height 300ms ease-out,
+      visibility 0s;
+  }
+  .pacc-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 16px 18px;
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+  }
+  .pacc-row[data-open] .pacc-inner {
+    opacity: 1;
+    transition: opacity 300ms ease-out 80ms;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* Scroll-in, once: the strips fade up, 60ms apart. */
+    .motion.pacc-item {
+      --motion-stagger: 60ms;
+    }
+    .motion.pacc-item[data-anim]:not([data-anim='reset']) > .pacc-row {
+      animation: pacc-rise 500ms var(--motion-ease) var(--motion-delay) backwards;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pacc-strip,
+    .pacc-photo,
+    .pacc-fade,
+    .pacc-grade,
+    .pacc-text,
+    .pacc-chevron,
+    .pacc-panel,
+    .pacc-row[data-open] .pacc-panel,
+    .pacc-inner,
+    .pacc-row[data-open] .pacc-inner {
+      transition: none;
+    }
+  }
+}
+
+@keyframes pacc-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}

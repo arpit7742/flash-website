@@ -1,0 +1,200 @@
+/*
+ * press — global styles for this area of the site.
+ *
+ * Components use these class names; no component carries inline style={...}.
+ * Classes sit in @layer components so a Tailwind utility on the same element
+ * still wins.
+ */
+
+@layer components {
+  /* Hero: navy wash from the headline side (left) across the hail-sky photo. */
+  .press-hero-grade-left {
+    background-image: linear-gradient(
+      in oklab 90deg,
+      color-mix(in oklab, var(--color-brand-navy) 95%, transparent) 0%,
+      color-mix(in oklab, var(--color-brand-navy) 80%, transparent) 46%,
+      color-mix(in oklab, var(--color-brand-navy) 18%, transparent) 100%
+    );
+  }
+
+  /* Hero: top-to-bottom grade that darkens at the foot of the section. */
+  .press-hero-grade-bottom {
+    background-image: linear-gradient(
+      in oklab 180deg,
+      color-mix(in oklab, var(--color-brand-navy) 22%, transparent) 0%,
+      color-mix(in oklab, var(--color-brand-navy) 0%, transparent) 40%,
+      color-mix(in oklab, var(--color-brand-navy) 92%, transparent) 100%
+    );
+  }
+}
+
+@layer components {
+  /*
+   * "More coverage, by beat" (components/press/beat-list.tsx).
+   *
+   * Row: one link. The logo sits in the partner table's own box
+   * (<LogoBox size="press">: 120x36 from md, 96x30 below, left-aligned,
+   * contained, on the white), so the column of logos lines up and every
+   * title starts at the same x. Two outlets share one box side by side.
+   * Then the title on one line in the coverage blue, the tag and the date
+   * right-aligned in a fixed column. Under md the title may wrap to two
+   * lines and the tag and date drop to a line below it.
+   */
+  .press-row {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    column-gap: 12px;
+    row-gap: 4px;
+    align-items: center;
+  }
+  .press-row-logo {
+    display: flex;
+    align-items: center;
+  }
+  .press-row-logo-empty {
+    display: block;
+    width: 96px;
+    height: 30px;
+  }
+  .press-row-pair {
+    display: flex;
+    width: 96px;
+    gap: 6px;
+  }
+  .press-row-pair-box {
+    width: calc(50% - 3px) !important;
+  }
+  .press-row-title {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    color: #1b3a8c;
+  }
+  .press-row-meta {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .press-row-tag {
+    display: inline-flex;
+    padding-inline: 6px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    font-size: 10px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+  .press-row-date {
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+  @media (width >= 768px) {
+    .press-row {
+      grid-template-columns: 120px minmax(0, 1fr) auto;
+      column-gap: 16px;
+    }
+    .press-row-logo-empty,
+    .press-row-pair {
+      width: 120px;
+    }
+    .press-row-logo-empty {
+      height: 36px;
+    }
+    .press-row-title {
+      display: block;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .press-row-meta {
+      grid-column: auto;
+      justify-content: flex-end;
+    }
+    .press-row-date {
+      width: 88px;
+      text-align: right;
+    }
+  }
+
+  /* Filter pills: a single scrolling row under md, wrapping from md. */
+  .press-filters {
+    scrollbar-width: none;
+  }
+  .press-filters::-webkit-scrollbar {
+    display: none;
+  }
+  .press-filter {
+    cursor: pointer;
+    transition: none;
+  }
+  .press-filter:focus-visible {
+    outline: 2px solid var(--color-viz-gold);
+    outline-offset: 2px;
+  }
+
+  /* The list fades out, swaps, and fades in when the filter changes. */
+  .press-beats {
+    transition: opacity 200ms ease-out;
+  }
+  .press-beats[data-fading] {
+    opacity: 0;
+  }
+
+  /*
+   * Reveal, once per beat: the items are held after hydration while the beat
+   * is below the fold ("wait"), then rise 10px over 500ms one after another
+   * at 70ms steps as the beat scrolls in ("in"), each logo fading and scaling
+   * from 0.92 a further 80ms after its item. "done" is the final frame with
+   * no entrance. The beat name and subtitle are outside the list and never move.
+   */
+  .press-beat-items[data-reveal='wait'] .press-beat-item {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  .press-beat-items[data-reveal='wait'] .press-row-logo img {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  .press-beat-items[data-reveal='in'] .press-beat-item {
+    animation: press-item-in 500ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 70ms);
+  }
+  .press-beat-items[data-reveal='in'] .press-row-logo img {
+    animation: press-logo-in 400ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i, 0) * 70ms + 80ms);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .press-beats {
+      transition: none;
+    }
+    .press-beat-items .press-beat-item,
+    .press-beat-items .press-row-logo img {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@keyframes press-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+@keyframes press-logo-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}

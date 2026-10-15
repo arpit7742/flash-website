@@ -1,0 +1,157 @@
+/*
+ * Home "Reactive detection. We're Proactive." on phones (below md): the
+ * comparison table's five rows become a row of cards, one pair at a time,
+ * that plays on its own and swipes (components/home/comparison.tsx,
+ * comparison-swipe.tsx). The table markup is the same one desktop lays out
+ * as a table; nothing here applies from md up.
+ */
+@layer components {
+  @media (width < 48rem) {
+    /* The row of cards. It bleeds to the screen edges so the next card can
+       peek, and its block padding is room for the cards' shadow. */
+    .cmpc-track {
+      display: flex;
+      gap: 12px;
+      margin-inline: -16px;
+      padding: 4px 16px 28px;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: 16px;
+      scrollbar-width: none;
+    }
+    .cmpc-track::-webkit-scrollbar {
+      display: none;
+    }
+    /* The scripted 500ms slide moves the row itself; snapping would fight it. */
+    .cmpc-track[data-sliding] {
+      scroll-snap-type: none;
+    }
+
+    /* One comparison: everyone else on white over Flash on navy. The row
+       stretches every card to the tallest, and the halves split it evenly,
+       so the seam sits at the same height on all five. */
+    .cmpc-card {
+      /* Holds the card's screen-reader label inside the row's scroll. */
+      position: relative;
+      display: flex;
+      flex: 0 0 100%;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      background: var(--color-neutral-0);
+      box-shadow: 0 14px 28px -16px rgb(7 13 38 / 26%);
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+    .cmpc-card > td {
+      display: flex;
+      flex: 1 1 0;
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px 20px 24px;
+    }
+
+    /* Lighter on a phone: the ambient loops play out and stop. */
+    .cmpc .motion[data-anim]:not([data-anim='reset']) .cmp-hourly-crawl {
+      animation-iteration-count: 1;
+    }
+    .cmpc .motion[data-anim]:not([data-anim='reset']) :is(.cmp-refresh-dots > circle, .cmp-refresh-end) {
+      animation-iteration-count: 1, 2;
+    }
+
+    .cmpc-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .cmpc-arrow {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--color-border-strong);
+      border-radius: 9999px;
+      background: var(--color-neutral-0);
+      color: var(--color-brand-navy);
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .cmpc-arrow[aria-disabled='true'] {
+      opacity: 0.35;
+      cursor: default;
+    }
+    .cmpc-dots {
+      display: flex;
+      align-items: center;
+    }
+    /* Each dot is a button with a 24px-tall target around the 8px mark. */
+    .cmpc-dot {
+      display: flex;
+      align-items: center;
+      padding: 8px 3px;
+      cursor: pointer;
+    }
+    .cmpc-dot-mark {
+      position: relative;
+      width: 8px;
+      height: 8px;
+      overflow: hidden;
+      border-radius: 9999px;
+      background: var(--color-neutral-300);
+      transition: width 0.25s var(--motion-ease);
+    }
+    /* The active dot is long, and fills left to right over its card's dwell
+       (a Web Animation from comparison-swipe.tsx); paused or played by hand,
+       it is simply full. */
+    .cmpc-dot[data-on] .cmpc-dot-mark {
+      width: 28px;
+    }
+    .cmpc-dot-fill {
+      position: absolute;
+      inset: 0;
+      background: var(--color-brand-navy);
+      opacity: 0;
+      transform-origin: 0 50%;
+    }
+    .cmpc-dot[data-on] .cmpc-dot-fill {
+      opacity: 1;
+    }
+
+    /* Pause / play: only once the row plays on its own (never with reduced
+       motion), showing what a press will do. */
+    .cmpc-toggle {
+      display: none;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--color-border-strong);
+      border-radius: 9999px;
+      background: var(--color-neutral-0);
+      color: var(--color-brand-navy);
+      cursor: pointer;
+    }
+    .cmpc[data-auto] .cmpc-toggle {
+      display: flex;
+    }
+    .cmpc-toggle-play,
+    .cmpc[data-paused] .cmpc-toggle-pause {
+      display: none;
+    }
+    .cmpc[data-paused] .cmpc-toggle-play {
+      display: block;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cmpc-dot-mark {
+        transition: none;
+      }
+    }
+  }
+}

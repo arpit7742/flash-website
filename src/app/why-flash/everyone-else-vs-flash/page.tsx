@@ -1,0 +1,422 @@
+import Image from 'next/image';
+import { SiteLink } from '@/components/site-link';
+
+import { FlashMark } from '@/components/flash-mark';
+import { Breadcrumbs } from '@/components/breadcrumbs';
+import { ButtonLink } from '@/components/button';
+import { HeroBackground, HeroSection, HeroWords } from '@/components/hero/hero';
+import { Motion } from '@/components/motion';
+import { SiteFooter } from '@/components/site-footer';
+import { SiteHeader } from '@/components/site-header';
+import { AlertClock } from '@/components/why-flash/alert-clock';
+import { ComparisonTable } from '@/components/why-flash/comparison-table';
+import { DetectionFitProvider, FitCases, FitSummary } from '@/components/why-flash/detection-fit';
+import { FaqList } from '@/components/why-flash/faq-list';
+import { OptionCards } from '@/components/why-flash/option-cards';
+import { IllustrativeChip, Kicker, SectionHeading } from '@/components/why-flash/section-heading';
+import { WhyFlashLinks } from '@/components/why-flash/why-flash-links';
+import { DEMO_HREF } from '@/content/navigation';
+import {
+  agenticSteps,
+  clockCards,
+  everyoneElseFaqs,
+  links,
+  summaryStrip,
+  WHY_FLASH_HOME,
+  whyFlashPages,
+} from '@/content/why-flash';
+import { JsonLd, faqSchema } from '@/lib/seo/jsonld';
+import { buildMetadata } from '@/lib/seo/metadata';
+import { site } from '@/lib/seo/site';
+
+const page = whyFlashPages.everyoneElse;
+/** This page's own H1 (the home page keeps its “Reactive detection” headline for its comparison). */
+const H1 = 'Flash vs lightning detection, side by side.';
+
+/** "Report an error" in the method note: a correction email with its subject filled in. */
+const REPORT_ERROR_HREF = `mailto:${site.email}?subject=${encodeURIComponent('Comparison correction: Everyone else vs Flash')}`;
+
+export const metadata = buildMetadata({
+  title: page.title,
+  description: page.description,
+  path: page.path,
+});
+
+export default function EveryoneElseVsFlashPage() {
+  return (
+    <>
+      <SiteHeader tone="dark" />
+      <main id="main">
+        <JsonLd schema={faqSchema(everyoneElseFaqs)} />
+
+        {/* Hero: the Why Flash articles' dark hero (as on Prediction vs sensors vs detection
+            and the Accuracy method), with this page's own H1. */}
+        <HeroSection theme="dark" className="relative overflow-hidden bg-brand-navy">
+          <HeroBackground storm>
+            <Image
+              src="/images/why-flash/flash-lightning-strike-open-ground-detection-network.jpg"
+              alt=""
+              fill
+              preload
+              sizes="100vw"
+              className="object-cover opacity-55"
+            />
+          </HeroBackground>
+          <div aria-hidden className="why-flash-hero-grade absolute inset-0" />
+          <div className="hero-copy container-page relative flex flex-col gap-6 pt-10 pb-20 lg:pb-[104px]">
+            <Breadcrumbs
+              tone="dark"
+              className="hero-crumbs"
+              trail={[
+                { name: 'Home', path: '/' },
+                { name: 'Why Flash', path: WHY_FLASH_HOME },
+                { name: page.label, path: page.path },
+              ]}
+            />
+            <Kicker tone="dark" className="hero-eyebrow pt-2">
+              Why Flash · Everyone else vs Flash · Prediction, not detection
+            </Kicker>
+            <h1 className="max-w-[1120px] text-[34px] leading-[40px] font-extrabold tracking-[-0.05em] text-text-on-dark md:text-display-m md:leading-display-m lg:text-display-l lg:leading-display-l">
+              <HeroWords text={H1} />
+            </h1>
+            <p className="hero-lede max-w-narrow text-body-l text-[#C9D1E3] md:text-[19px]">
+              Detection tools tell you where lightning was. Flash tells you where it will be, up to an hour before, one
+              kilometre at a time. That is the difference between reacting and deciding. No vendor is named on this
+              page: the left column is what detection-based tools and hourly forecasts do by design.
+            </p>
+            <div className="hero-ctas flex flex-col gap-3 sm:flex-row sm:gap-[14px]">
+              <ButtonLink href={DEMO_HREF} variant="gold" className="px-[30px]">
+                Book a demo
+              </ButtonLink>
+              <ButtonLink href={whyFlashPages.accuracyMethod.path} variant="outline-dark" className="px-[30px]">
+                Read the accuracy method
+              </ButtonLink>
+            </div>
+            {/* The small comparison strip, then who it is for. */}
+            <div className="hero-visual flex flex-col gap-3 pt-2">
+              <ul className="flex flex-wrap items-center gap-x-7 gap-y-2 text-[11px] leading-[14px] font-extrabold tracking-[0.13em]">
+                <li className="flex items-center gap-2 text-text-on-dark-muted">
+                  <span aria-hidden className="size-[10px] shrink-0 rounded-full bg-neutral-500" />
+                  DETECTS · AFTER
+                </li>
+                <li className="flex items-center gap-2 text-text-on-dark">
+                  <FlashMark size={14} variant="gold" className="shrink-0" />
+                  PREDICTS · UP TO 60 MIN BEFORE
+                </li>
+              </ul>
+              <p className="text-caption text-[#8F9AB8]">
+                For golf, construction, sports, schools, roofing and agriculture. Nothing to install. No vendor is named
+                on this page.
+              </p>
+            </div>
+          </div>
+        </HeroSection>
+
+        {/* Summary strip */}
+        <section aria-label="Summary: everyone else vs Flash" className="border-y border-border bg-surface-sunken">
+          <dl className="container-page grid gap-8 py-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0">
+            {summaryStrip.map((item, i) => (
+              <div
+                key={item.label}
+                className={`flex flex-col gap-3 lg:px-6 ${i === 0 ? 'lg:pl-0' : ''} ${
+                  i < summaryStrip.length - 1 ? 'lg:border-r lg:border-border' : 'lg:pr-0'
+                }`}
+              >
+                <dt className="text-[11px] leading-[14px] font-bold tracking-[0.13em] text-text-muted uppercase">
+                  {item.label}
+                </dt>
+                <dd className="flex items-start gap-[10px]">
+                  <span className="w-[100px] shrink-0 text-[10px] leading-5 font-extrabold tracking-[0.12em] text-text-muted">
+                    EVERYONE ELSE
+                  </span>
+                  <span className="text-[15px] leading-5 text-text-muted">{item.else}</span>
+                </dd>
+                <dd className="flex items-start gap-[10px]">
+                  <span className="w-[100px] shrink-0 text-[10px] leading-5 font-extrabold tracking-[0.12em] text-brand-blue">
+                    FLASH
+                  </span>
+                  <span className="text-[15px] leading-5 text-text">{item.flash}</span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        {/* Side by side */}
+        <section aria-labelledby="side-by-side" className="bg-surface-sunken">
+          <div className="container-page flex flex-col gap-10 py-20 lg:py-28">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+              <SectionHeading id="side-by-side" kicker="Capability by capability" size="lg" className="max-w-narrow">
+                Which does what? Everyone else and Flash, side by side.
+              </SectionHeading>
+              <div className="flex flex-col gap-[14px] lg:w-[380px] lg:shrink xl:shrink-0">
+                <p className="text-body text-text-muted">
+                  Left column: what detection-based lightning tools and hourly forecasts do by design. Right column:
+                  what Flash does, with the numbers published on flashweather.ai.
+                </p>
+                <div>
+                  <IllustrativeChip />
+                </div>
+              </div>
+            </div>
+
+            <ComparisonTable />
+
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <SiteLink
+                href={whyFlashPages.predictionVsSensors.path}
+                className="inline-flex min-h-11 items-center text-body-s leading-caption font-bold text-brand-blue hover:underline"
+              >
+                Read the full explainer: prediction vs sensors vs detection&nbsp;<span aria-hidden>→</span>
+              </SiteLink>
+              <p className="text-caption leading-micro text-text-subtle">Generic comparison with detection-based tools. No vendor named.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Photo band */}
+        <div className="relative h-[420px] overflow-hidden bg-brand-navy">
+          <Image
+            src="/images/why-flash/flash-storm-cell-open-ground-lightning-lead-time.jpg"
+            alt="A towering storm cell building over open flat ground with a distant rain shaft, used to introduce where each alert sits on the clock"
+            fill
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div aria-hidden className="why-flash-photo-grade absolute inset-0" />
+          <div className="container-page relative flex h-full flex-col justify-end pb-9">
+            <div className="flex max-w-[820px] flex-col gap-3">
+              <Kicker tone="dark">The hour before</Kicker>
+              <p className="text-[24px] leading-[30px] font-extrabold tracking-[-0.03em] text-text-on-dark md:text-[30px] md:leading-[36px]">
+                A detection alert starts its clock at the first strike. Flash starts yours up to 60 minutes earlier.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* The clock */}
+        <section aria-labelledby="the-clock" className="bg-brand-navy">
+          <div className="container-page flex flex-col gap-10 py-20 lg:py-28">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-12">
+              <SectionHeading id="the-clock" kicker="The clock" tone="dark" size="lg" className="lg:w-narrow lg:shrink xl:shrink-0">
+                Where each alert sits on the clock
+              </SectionHeading>
+              <p className="text-body text-text-on-dark-muted lg:w-panel lg:shrink xl:shrink-0 lg:pt-[38px]">
+                Detection can only report a strike after it has been located. Flash flags the cell in the hour before
+                it. Both are useful; only one of them gives you time.
+              </p>
+            </div>
+
+            {/* The dial sits between the cards from xl (Detection left, Flash right, each beside its
+                markers) and above them below xl. One Motion block, so the sweep can light the cards. */}
+            <Motion className="motion eec flex flex-wrap gap-6 xl:flex-nowrap xl:items-center xl:gap-10" replay={false}>
+              <AlertClock className="w-full xl:order-2 xl:w-auto xl:shrink-0" />
+              {clockCards.map((card) => (
+                <div
+                  key={card.key}
+                  data-kind={card.key}
+                  className={`eec-card flex w-full flex-col gap-4 rounded-[20px] border border-white/10 bg-[#040818B8] p-6 md:p-7 lg:w-[calc(50%-12px)] xl:w-auto xl:min-w-0 xl:flex-1 ${
+                    card.key === 'flash' ? 'xl:order-3' : 'xl:order-1'
+                  }`}
+                >
+                  <h3 className="text-[11px] leading-[14px] font-bold tracking-[0.13em] text-text-on-dark-muted uppercase">
+                    {card.label}
+                  </h3>
+                  <p className="text-body-l leading-h4 text-text-on-dark">{card.lead}</p>
+                  <div aria-hidden className="h-px bg-border-on-dark" />
+                  <p className="text-[11px] leading-[14px] font-bold tracking-[0.13em] text-viz-gold uppercase">
+                    On site, that means
+                  </p>
+                  <p className="text-body text-text-on-dark">{card.onSite}</p>
+                </div>
+              ))}
+            </Motion>
+          </div>
+        </section>
+
+        {/* When detection fits, then the options: the self-check's selection carries into the next section. */}
+        <DetectionFitProvider>
+          <section aria-labelledby="detection-fit" className="bg-neutral-0">
+            <div className="container-page flex flex-col gap-12 py-20 lg:flex-row lg:items-start lg:gap-20 lg:py-28">
+              <div className="fit-intro flex flex-col gap-3 lg:w-[408px] lg:shrink xl:shrink-0">
+                <SectionHeading id="detection-fit" kicker="Honest answer" size="lg">
+                  When is a detection-based tool the better fit?
+                </SectionHeading>
+                <p className="text-[15px] leading-body-s text-text-muted">
+                  Three cases where we would tell you to keep the sensor, and what Flash does beside it.
+                </p>
+                <FitSummary optionsHref="#your-options" />
+              </div>
+              <div className="flex flex-col lg:-mt-5 lg:w-narrow lg:shrink xl:shrink-0">
+                <FitCases />
+              </div>
+            </div>
+          </section>
+
+          {/* Alternatives */}
+          <section aria-labelledby="your-options" className="border-t border-border bg-surface-sunken">
+            <div className="container-page flex flex-col gap-8 py-20 lg:py-28">
+              <SectionHeading id="your-options" kicker="Your options" size="lg" className="max-w-[900px]">
+                Detection, prediction or do it yourself: which one fits your site?
+              </SectionHeading>
+
+              <OptionCards />
+
+              <div className="flex flex-col gap-8 border-t border-border pt-10 lg:flex-row lg:items-start lg:gap-20">
+                <div className="flex flex-col gap-[10px] lg:w-[408px] lg:shrink xl:shrink-0">
+                  <Kicker>The agentic approach</Kicker>
+                  <h3 className="text-h3 leading-h3 font-extrabold tracking-display text-text">
+                    Everyone else vs the agentic approach
+                  </h3>
+                  <p className="text-[17px] leading-h4 text-text-muted">
+                    A dashboard, whoever makes it, still needs someone to open it, read the alert and make the call.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-6 lg:w-narrow lg:shrink xl:shrink-0">
+                  <Motion as="ol" className="motion agf" label="How Sky works" replay={false} threshold={0.5}>
+                    {agenticSteps.map((step, i) => (
+                      <li key={step.label} className="agf-step" style={{ '--agf-i': i } as React.CSSProperties}>
+                        <div aria-hidden className="agf-rail">
+                          <span className="agf-dot" />
+                          <span className="agf-line" />
+                        </div>
+                        <div className="agf-copy">
+                          <p className="text-micro font-bold tracking-[0.13em] text-brand-blue uppercase">
+                            {step.label}
+                          </p>
+                          <p
+                            className={`text-body leading-body ${i === 0 ? 'font-semibold text-text' : 'text-text-muted'}`}
+                          >
+                            {step.body}
+                          </p>
+                        </div>
+                      </li>
+                    ))}
+                  </Motion>
+                  <div className="flex flex-wrap gap-x-7">
+                    <SiteLink
+                      href={links.agent.href}
+                      className="inline-flex min-h-11 items-center text-body-s leading-caption font-bold text-brand-blue hover:underline"
+                    >
+                      See Sky&nbsp;<span aria-hidden>→</span>
+                    </SiteLink>
+                    <SiteLink
+                      href={links.integrations.href}
+                      className="inline-flex min-h-11 items-center text-body-s leading-caption font-bold text-brand-blue hover:underline"
+                    >
+                      Integrations&nbsp;<span aria-hidden>→</span>
+                    </SiteLink>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </DetectionFitProvider>
+
+        {/* Method note */}
+        <section aria-labelledby="honest-comparison" className="bg-neutral-0">
+          <Motion
+            className="motion container-page flex flex-col gap-10 py-20 lg:flex-row lg:items-start lg:gap-20 lg:py-28"
+            replay={false}
+            threshold={0.2}
+          >
+            <SectionHeading
+              id="honest-comparison"
+              kicker="How this page is written"
+              size="lg"
+              className="wfh-rise lg:w-[408px] lg:shrink xl:shrink-0"
+            >
+              How we keep this comparison honest
+            </SectionHeading>
+            <div className="flex flex-col gap-5 text-body text-text lg:w-narrow lg:shrink xl:shrink-0">
+              <p className="wfh-rise" data-step="1">
+                No vendor is named on this page. “Everyone else” means the two things most operations run today: a
+                detection-based lightning tool that alerts on strikes already located, and an hourly forecast issued
+                for a county or a city. The left column describes what those do by design, not what any one product
+                promises.
+              </p>
+              <p className="wfh-rise" data-step="1">
+                Every Flash figure on this page comes from flashweather.ai and is defined on the{' '}
+                <SiteLink href={whyFlashPages.accuracyMethod.path} className="font-semibold text-brand-blue hover:underline">
+                  Accuracy Method
+                </SiteLink>{' '}
+                page: what is scored, on what window and against what ground truth. The clock times in the table are
+                illustrative, not live weather.
+              </p>
+              <p className="wfh-rise" data-step="1">
+                If you build a detection tool and think a row is unfair, write to{' '}
+                <a href="mailto:support@flashweather.ai" className="font-semibold text-brand-blue hover:underline">
+                  support@flashweather.ai
+                </a>
+                . We will read it, and change the row if it is wrong.
+              </p>
+              <dl className="wfh-rise flex flex-col pt-1" data-step="2">
+                <div className="flex flex-col gap-1 border-y border-border py-[14px] sm:flex-row sm:gap-4">
+                  <dt className="w-32 shrink-0 text-micro leading-body-s font-bold tracking-[0.08em] text-text">
+                    FLASH FIGURES
+                  </dt>
+                  <dd className="wfh-cell text-[15px] leading-body-s text-text-muted">
+                    <span className="min-w-0 grow">
+                      Defined and scored in the{' '}
+                      <SiteLink
+                        href={whyFlashPages.accuracyMethod.path}
+                        className="font-semibold text-brand-blue hover:underline"
+                      >
+                        accuracy method
+                      </SiteLink>{' '}
+                      · product specifications on{' '}
+                      <SiteLink href={links.lightning.href} className="font-semibold text-brand-blue hover:underline">
+                        {links.lightning.label}
+                      </SiteLink>{' '}
+                      and{' '}
+                      <SiteLink href={links.hail.href} className="font-semibold text-brand-blue hover:underline">
+                        {links.hail.label}
+                      </SiteLink>
+                    </span>
+                    <span className="wfh-badge-slot">
+                      <SiteLink href={whyFlashPages.accuracyMethod.path} className="wfh-badge" data-tone="scored">
+                        Scored · see method
+                      </SiteLink>
+                    </span>
+                  </dd>
+                </div>
+                <div className="flex flex-col gap-1 border-b border-border py-[14px] sm:flex-row sm:gap-4">
+                  <dt className="w-32 shrink-0 text-micro leading-body-s font-bold tracking-[0.08em] text-text">
+                    EVERYONE ELSE
+                  </dt>
+                  <dd className="wfh-cell text-[15px] leading-body-s text-text-muted">
+                    <span className="min-w-0 grow">
+                      Described by category only: detection-based tools and hourly forecasts. No vendor&rsquo;s page is
+                      quoted.
+                    </span>
+                    <span className="wfh-badge-slot">
+                      <span className="wfh-badge">No vendor named</span>
+                    </span>
+                  </dd>
+                </div>
+              </dl>
+              <div className="wfh-rise" data-step="3">
+                <ButtonLink href={REPORT_ERROR_HREF} variant="outline-light" size="sm" className="wfh-report">
+                  Report an error
+                </ButtonLink>
+              </div>
+            </div>
+          </Motion>
+        </section>
+
+        {/* FAQ */}
+        <section aria-labelledby="faq" className="border-t border-border bg-surface-sunken">
+          <div className="container-page flex flex-col gap-8 py-20 lg:py-28">
+            <SectionHeading id="faq" kicker="FAQ" size="lg" className="max-w-[900px]">
+              Questions buyers ask before choosing between detection and prediction
+            </SectionHeading>
+            <FaqList faqs={everyoneElseFaqs} />
+          </div>
+        </section>
+
+        <WhyFlashLinks current="everyoneElse" extra={[links.lightning, links.hail, links.pricing]} />
+      </main>
+      <SiteFooter eyebrow="Book a demo · No sensors required for the forecast" />
+    </>
+  );
+}

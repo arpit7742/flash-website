@@ -1,0 +1,222 @@
+/*
+ * agent-widget — the floating Flash Agent widget (components/agent-widget.tsx),
+ * on every page but Book a demo.
+ *
+ *   card     from md: 340px by 92px, 20px in from the bottom-right corner,
+ *            fixed and expanded at every scroll position. Two rows: the bolt,
+ *            the name and minimize; then the question box, whose placeholder
+ *            types the demo questions, beside "Ask now". Minimized (by the visitor only) it
+ *            is the top row alone, as wide as that
+ *   bar      below md: 56px along the bottom, 12px in from the sides and
+ *            above the safe area; the bolt, the question box, "Ask now"
+ *   arrival  hidden until the script sets `data-visible`, 1.5s after the
+ *            page's load, then it fades and rises 12px; its only animation
+ *   aside    gone while the video lightbox is open, back when it closes; the
+ *            phone bar also while the mobile menu is open or a text field
+ *            has focus (the keyboard is up), its own question box excepted
+ *   room     the footer keeps the widget's height, its offset and 24px free
+ *            under its last row, so the end of every page scrolls clear of it
+ *
+ * Reduced motion: no rise (and no typing, in the script).
+ */
+@layer components {
+  .agent-widget {
+    position: fixed;
+    inset: auto 12px calc(12px + env(safe-area-inset-bottom));
+    z-index: 30;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.4s var(--motion-ease),
+      visibility 0s 0.4s;
+  }
+  .agent-widget[data-visible] {
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity 0.4s var(--motion-ease),
+      visibility 0s;
+  }
+  /* Out of the way while the video lightbox is open, at every width. */
+  :root:has(.vp-dialog[open]) .agent-widget {
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.2s ease-out,
+      visibility 0s 0.2s;
+  }
+  /* The phone bar also: the mobile menu, and a text field in use (the keyboard is up). */
+  @media (width < 768px) {
+    :root.site-menu-open .agent-widget,
+    :root:has(:is(input:not([type='radio'], [type='checkbox'], [type='range'], [type='button'], [type='submit'], .agent-widget-input), textarea, select):focus)
+      .agent-widget {
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        opacity 0.2s ease-out,
+        visibility 0s 0.2s;
+    }
+  }
+
+  .agent-widget-card,
+  .agent-widget-bar {
+    border: 1px solid rgb(255 255 255 / 10%);
+    background-color: var(--color-brand-navy);
+    box-shadow:
+      0 24px 48px -16px rgb(4 8 24 / 55%),
+      0 4px 12px rgb(4 8 24 / 25%);
+  }
+  .agent-widget-card {
+    display: none;
+    padding: 10px 12px;
+    border-radius: 18px;
+  }
+  .agent-widget-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 56px;
+    padding-inline: 8px;
+    border-radius: 16px;
+  }
+  @media (width >= 768px) {
+    .agent-widget {
+      inset: auto 20px 20px auto;
+      width: 340px;
+    }
+    /* Minimized by the visitor: the top row alone. */
+    .agent-widget[data-minimized] {
+      width: auto;
+    }
+    .agent-widget-card {
+      display: block;
+    }
+    .agent-widget-bar {
+      display: none;
+    }
+  }
+
+  /* The minimize and expand control. */
+  .agent-widget-toggle {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    color: #8f9ab8;
+    cursor: pointer;
+    transition:
+      color 0.2s ease-out,
+      background-color 0.2s ease-out;
+  }
+  .agent-widget-toggle > svg {
+    width: 12px;
+    height: 12px;
+  }
+  .agent-widget-toggle:hover {
+    background-color: rgb(255 255 255 / 8%);
+    color: var(--color-text-on-dark);
+  }
+
+  /* The question box: the loop types into its placeholder; the visitor types into it. */
+  .agent-widget-ask {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    color: var(--color-text-on-dark);
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+  }
+  .agent-widget-card .agent-widget-ask {
+    border: 1px solid rgb(255 255 255 / 12%);
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 18px;
+    background-color: var(--color-brand-navy-deep);
+    transition: border-color 0.2s ease-out;
+  }
+  .agent-widget-card .agent-widget-ask:hover {
+    border-color: rgb(255 255 255 / 28%);
+  }
+  .agent-widget-bar .agent-widget-ask {
+    border-radius: 8px;
+  }
+  .agent-widget-input {
+    appearance: none;
+    width: 100%;
+    background-color: transparent;
+  }
+  .agent-widget-input::placeholder {
+    color: var(--color-text-on-dark);
+    opacity: 1;
+  }
+
+  .agent-widget-demo {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    transition: filter 0.15s ease-out;
+  }
+  .agent-widget-demo:hover {
+    filter: brightness(1.06);
+  }
+
+  .agent-widget-toggle:focus-visible,
+  .agent-widget-ask:focus-visible,
+  .agent-widget-demo:focus-visible {
+    outline: 2px solid var(--color-viz-gold);
+    outline-offset: 2px;
+  }
+
+  /* Phones: the room the bar takes (its 56px, its 12px offset and the safe
+     area) plus 16px of air. Every page ends with that much free under its
+     last row, and anything scrolled to (an anchor, a focused field or link)
+     stops clear of the bar, never under it -- from the first paint, not only
+     once the bar has faded in. */
+  @media (width < 768px) {
+    :root:has(.agent-widget) {
+      --agent-bar-room: calc(56px + 12px + 16px + env(safe-area-inset-bottom));
+      scroll-padding-bottom: var(--agent-bar-room);
+    }
+    :root:has(.agent-widget) .site-footer {
+      padding-bottom: var(--agent-bar-room);
+    }
+  }
+  /* From md: the card's 20px offset, its height (92px; 46px minimized) and
+     24px of air, the same way. */
+  @media (width >= 768px) {
+    :root:has(.agent-widget) {
+      --agent-card-room: calc(20px + 92px + 24px);
+      scroll-padding-bottom: var(--agent-card-room);
+    }
+    :root:has(.agent-widget[data-minimized]) {
+      --agent-card-room: calc(20px + 46px + 24px);
+    }
+    :root:has(.agent-widget) .site-footer {
+      padding-bottom: var(--agent-card-room);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .agent-widget[data-visible] {
+      animation: agent-widget-rise 0.5s var(--motion-ease);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .agent-widget,
+    .agent-widget[data-visible] {
+      transition: none;
+    }
+  }
+}
+
+@keyframes agent-widget-rise {
+  from {
+    translate: 0 12px;
+  }
+}

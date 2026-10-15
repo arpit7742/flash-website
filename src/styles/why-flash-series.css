@@ -1,0 +1,91 @@
+/*
+ * "More in Why Flash" as a series (components/why-flash/why-flash-links.tsx),
+ * on the three Why Flash pages.
+ *
+ *   hover    a card lifts 4px with a soft shadow and its arrow slides 4px
+ *            right (180ms ease-out); a smaller card's border turns brand blue
+ *   focus    the same, plus a 2px brand-blue ring 3px out
+ *   in       on first scroll into view each item rises 16px and fades in,
+ *            400ms, 60ms apart left to right, then the text row; once
+ *
+ * Reduced motion: no lift, no slide, no fade; hover changes only the border
+ * and the arrow's colour.
+ */
+@layer components {
+  .wfn-card {
+    transition:
+      translate 180ms ease-out,
+      box-shadow 180ms ease-out,
+      border-color 180ms ease-out;
+  }
+  .wfn-arrow {
+    display: inline-block;
+    transition:
+      translate 180ms ease-out,
+      color 180ms ease-out;
+  }
+  .wfn-card:is(:hover, :focus-visible) {
+    translate: 0 -4px;
+  }
+  .wfn-card:is(:hover, :focus-visible) .wfn-arrow {
+    translate: 4px 0;
+  }
+  .wfn-primary:is(:hover, :focus-visible) {
+    box-shadow: 0 18px 36px rgb(7 13 38 / 20%);
+  }
+  .wfn-small:is(:hover, :focus-visible) {
+    border-color: var(--color-brand-blue);
+    box-shadow: 0 14px 28px rgb(7 13 38 / 12%);
+  }
+  .wfn-card:focus-visible {
+    outline: 2px solid var(--color-brand-blue);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wfn-card,
+    .wfn-arrow {
+      transition: none;
+    }
+    .wfn-card:is(:hover, :focus-visible),
+    .wfn-card:is(:hover, :focus-visible) .wfn-arrow {
+      translate: none;
+    }
+    .wfn-card:is(:hover, :focus-visible) {
+      box-shadow: none;
+    }
+    .wfn-primary:is(:hover, :focus-visible) .wfn-arrow {
+      color: var(--color-gold-100);
+    }
+    .wfn-small:is(:hover, :focus-visible) .wfn-arrow {
+      color: var(--color-brand-navy);
+    }
+  }
+
+  /* The fade-up, under Motion's data-anim (the shared fail-safe trigger). */
+  .motion[data-anim]:not([data-anim='reset']) .wfn-step {
+    animation: wfn-rise 400ms var(--motion-ease) backwards;
+  }
+  .motion[data-anim]:not([data-anim='reset']) .wfn-step[data-step='1'] {
+    animation-delay: calc(var(--motion-delay) + 60ms);
+  }
+  .motion[data-anim]:not([data-anim='reset']) .wfn-step[data-step='2'] {
+    animation-delay: calc(var(--motion-delay) + 120ms);
+  }
+  .motion[data-anim]:not([data-anim='reset']) .wfn-step[data-step='3'] {
+    animation-delay: calc(var(--motion-delay) + 180ms);
+  }
+  .motion[data-anim]:not([data-anim='reset']) .wfn-step[data-step='4'] {
+    animation-delay: calc(var(--motion-delay) + 240ms);
+  }
+  .motion[data-anim]:not([data-anim='reset']) .wfn-step[data-step='0'] {
+    animation-delay: var(--motion-delay);
+  }
+}
+
+@keyframes wfn-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}

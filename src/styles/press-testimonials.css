@@ -1,0 +1,278 @@
+/*
+ * Press & Partners · "What do the people running the sites say?"
+ * (components/press/testimonials.tsx): the navy band, the six quote cards
+ * stacked down it, and each card's one sweep in from its own side
+ * (components/press/testimonial-stream.tsx sets `data-reveal`).
+ *
+ * Each card is a share of the band's width, pushed to one side (`--x`), tilted
+ * a degree or two (`--tilt`) and overlapping the card above, later cards on
+ * top. The offsets are deliberately uneven so the stack does not read as a
+ * grid. Every word on a card is navy; the secondary tone is neutral-800,
+ * which passes WCAG AA on the darkest card ground (gold-300).
+ *
+ * Every colour, radius, type size and easing here is a site token
+ * (globals.css). The card grounds cycle through six token colours by
+ * position.
+ */
+@layer components {
+  .tq-band {
+    --tq-navy: var(--color-brand-navy);
+    border-radius: var(--radius-xl);
+    background: var(--tq-navy);
+    color: var(--color-text-on-dark);
+  }
+
+  .tq-stream {
+    --tq-width: 92%;
+    --tq-overlap: 10px;
+    /* How much of the card's own tilt shows: half on phones, all on larger screens, none with reduced motion. */
+    --tq-tilt-k: 0.5;
+    --tq-from: 140px;
+  }
+
+  .tq-card {
+    position: relative;
+    z-index: var(--tq-z, 1);
+    width: var(--tq-width);
+    margin-left: var(--x);
+    border-radius: var(--radius-lg);
+    background: var(--bg);
+    color: var(--tq-navy);
+    box-shadow:
+      0 2px 4px rgb(0 0 0 / 20%),
+      0 28px 56px -20px rgb(0 0 0 / 55%);
+    transform: rotate(calc(var(--tilt) * var(--tq-tilt-k)));
+  }
+  .tq-card + .tq-card {
+    margin-top: calc(-1 * var(--tq-overlap));
+  }
+  /* Later cards on top. */
+  .tq-card:nth-child(6n + 1) {
+    --tq-z: 1;
+    --tilt: -2deg;
+    --bg: var(--color-gold-300);
+  }
+  .tq-card:nth-child(6n + 2) {
+    --tq-z: 2;
+    --tilt: 2deg;
+    --bg: var(--color-neutral-0);
+  }
+  .tq-card:nth-child(6n + 3) {
+    --tq-z: 3;
+    --tilt: -1.7deg;
+    --bg: var(--color-neutral-200);
+  }
+  .tq-card:nth-child(6n + 4) {
+    --tq-z: 4;
+    --tilt: 2.2deg;
+    --bg: var(--color-gold-100);
+  }
+  .tq-card:nth-child(6n + 5) {
+    --tq-z: 5;
+    --tilt: -2.2deg;
+    --bg: var(--color-neutral-100);
+  }
+  .tq-card:nth-child(6n + 6) {
+    --tq-z: 6;
+    --tilt: 1.8deg;
+    --bg: var(--color-neutral-300);
+  }
+
+  /* Phones: right cards sit 6% in, left cards flush. */
+  .tq-card[data-side='right'] {
+    --x: 6%;
+  }
+  .tq-card[data-side='left'] {
+    --x: 0%;
+  }
+
+  .tq-figure {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 16px 16px 28px;
+  }
+  .tq-picture {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    flex: none;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    background: var(--tq-navy);
+  }
+  .tq-text {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    padding-inline: 4px;
+  }
+  .tq-quote p {
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-wrap: pretty;
+  }
+  .tq-quote-long p {
+    font-size: var(--text-body-s);
+    line-height: var(--leading-body-s);
+  }
+  .tq-caption {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .tq-name {
+    font-size: var(--text-body);
+    line-height: var(--leading-body-s);
+    font-weight: 800;
+  }
+  /* neutral-800 on gold-300 is well over 4.5:1; on every lighter ground, more. */
+  .tq-role {
+    font-size: var(--text-body-s);
+    line-height: var(--leading-body-s);
+    font-weight: 600;
+    color: var(--color-neutral-800);
+  }
+  /* Inline, so a long label wraps as text; the block padding keeps a 44px touch target on phones. */
+  .tq-source {
+    display: inline;
+    align-self: flex-start;
+    padding-block: 11px;
+    font-size: var(--text-caption);
+    line-height: var(--leading-caption);
+    font-weight: 600;
+    color: var(--color-neutral-800);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in oklab, var(--color-neutral-800) 45%, transparent);
+    text-underline-offset: 3px;
+  }
+
+  @media (width >= 768px) {
+    .tq-stream {
+      --tq-width: 78%;
+      --tq-overlap: 20px;
+      --tq-tilt-k: 1;
+    }
+    .tq-card[data-side='right'] {
+      --x: 18%;
+    }
+    .tq-card[data-side='left'] {
+      --x: 2%;
+    }
+    .tq-card:nth-child(3) {
+      --x: 19%;
+    }
+    .tq-card:nth-child(4) {
+      --x: 3%;
+    }
+    .tq-card:nth-child(5) {
+      --x: 17%;
+    }
+
+    .tq-figure {
+      flex-direction: row;
+      align-items: stretch;
+      gap: 28px;
+      /* The next card overlaps this one's low corner by the overlap plus the tilt's drop (about 26px at 2deg), so the text keeps clear of it. */
+      padding: 20px 20px 44px;
+    }
+    .tq-card[data-side='right'] .tq-figure {
+      flex-direction: row-reverse;
+    }
+    .tq-picture {
+      width: 36%;
+      min-height: 220px;
+      aspect-ratio: auto;
+    }
+    .tq-text {
+      padding: 8px 4px;
+    }
+    .tq-quote p {
+      font-size: var(--text-body-l);
+      line-height: var(--leading-h4);
+    }
+    .tq-quote-long p {
+      font-size: var(--text-body);
+      line-height: var(--leading-body);
+    }
+    .tq-source {
+      padding-block: 0;
+    }
+  }
+
+  @media (width >= 1024px) {
+    .tq-stream {
+      --tq-width: 64%;
+    }
+    .tq-card[data-side='right'] {
+      --x: 30%;
+    }
+    .tq-card[data-side='left'] {
+      --x: 3%;
+    }
+    .tq-card:nth-child(3) {
+      --x: 31%;
+    }
+    .tq-card:nth-child(4) {
+      --x: 2%;
+    }
+    .tq-card:nth-child(5) {
+      --x: 29%;
+    }
+    .tq-card:nth-child(6) {
+      --x: 4%;
+    }
+
+    .tq-figure {
+      gap: 32px;
+      padding: 24px 24px 52px;
+    }
+    .tq-quote p {
+      font-size: var(--text-h4);
+      line-height: var(--leading-body-l);
+    }
+  }
+
+  /*
+   * The sweep. A card is held (`idle`) only after hydration and only while it
+   * waits below the fold; `run` plays it in once; `done` is the resting frame
+   * with no entrance. Right-side cards come from the right, left from the left.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    .tq-card[data-side='right'] {
+      --tq-dir: 1;
+    }
+    .tq-card[data-side='left'] {
+      --tq-dir: -1;
+    }
+    .tq-card[data-reveal='idle'] {
+      opacity: 0;
+      transform: translateX(calc(var(--tq-dir) * var(--tq-from))) rotate(calc(var(--tq-dir) * 7deg));
+    }
+    .tq-card[data-reveal='run'] {
+      animation: tq-sweep 900ms var(--motion-ease) both;
+    }
+  }
+
+  /* Reduced motion: no sweep and no tilt; the cards sit straight and shown. */
+  @media (prefers-reduced-motion: reduce) {
+    .tq-stream {
+      --tq-tilt-k: 0;
+    }
+  }
+}
+
+@keyframes tq-sweep {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--tq-dir) * var(--tq-from))) rotate(calc(var(--tq-dir) * 7deg));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotate(calc(var(--tilt) * var(--tq-tilt-k)));
+  }
+}

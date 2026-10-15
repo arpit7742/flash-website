@@ -1,0 +1,225 @@
+/*
+ * header — the floating site nav (components/site-header.tsx).
+ *
+ * A bar detached from the screen's edges: 12px from the top, the width of
+ * the page's content, 64px tall, rounded, on a translucent blurred ground
+ * with a 1px edge and a soft shadow. Its colours are variables set by its
+ * `data-theme`: the page's tone, fixed for the page, except over the page's
+ * ending (the closing band and the footer), where a light page's bar takes
+ * the dark theme.
+ *
+ * Nothing is reserved for it. The page's first section starts at the top of
+ * the screen, behind the bar, and is padded clear of it here, so every page's
+ * content sits where it did.
+ *
+ * `data-nav-hidden` on <html> (past half the page, scrolling down) slides
+ * the bar up out of view over 300ms; with reduced motion it just goes.
+ *
+ *   --site-header-h      the bar's bottom edge, 76px: what a sticky panel or
+ *                        a full-height stage keeps clear of. It does not
+ *                        change, so nothing reflows when the nav hides.
+ *   --site-header-stick  the same edge for a bar that rides flush under the
+ *                        nav: 76px, easing to 0 while the nav is away, so
+ *                        the bar rides at the top of the screen instead.
+ */
+@property --site-header-stick {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 76px;
+}
+
+@layer components {
+  :root {
+    --site-header-top: 12px;
+    --site-header-bar: 64px;
+    --site-header-h: 76px;
+    --site-header-h-compact: var(--site-header-h);
+    --site-header-stick: 76px;
+    /* Anchor targets land clear of the bar. */
+    scroll-padding-top: calc(var(--site-header-h) + 12px);
+    transition: --site-header-stick 300ms ease-out;
+  }
+  :root[data-nav-hidden] {
+    --site-header-stick: 0px;
+  }
+
+  /* The page's first section (after any JSON-LD and a screen-reader-only
+     breadcrumb trail) runs up behind the bar; its content starts below it. */
+  #main > :nth-child(1 of :not(script, .sr-only)) {
+    padding-top: var(--site-header-h);
+  }
+
+  .site-header {
+    position: fixed;
+    inset: var(--site-header-top) 0 auto;
+    /* Above every section and the Flash Agent widget (z-30). */
+    z-index: 50;
+    color: var(--hdr-fg);
+    /* Only the bar takes the pointer, not the margins beside it. */
+    pointer-events: none;
+    transition: translate 300ms ease-out;
+  }
+  /* Up past the top edge, with room for its shadow. */
+  :root[data-nav-hidden] .site-header {
+    translate: 0 calc(-100% - var(--site-header-top) - 32px);
+  }
+  .site-header[data-theme='dark'] {
+    --hdr-fg: var(--color-text-on-dark);
+    --hdr-muted: var(--color-text-on-dark-muted);
+    --hdr-ground: color-mix(in srgb, var(--color-brand-navy) 82%, transparent);
+    --hdr-solid: var(--color-brand-navy-deep);
+    --hdr-rule: var(--color-border-on-dark);
+    --hdr-edge: rgb(255 255 255 / 14%);
+    --hdr-shadow: 0 14px 36px -14px rgb(4 8 24 / 60%);
+    --hdr-panel-hover: rgb(255 255 255 / 5%);
+    --hdr-toggle: rgb(255 255 255 / 20%);
+  }
+  .site-header[data-theme='light'] {
+    --hdr-fg: var(--color-text);
+    --hdr-muted: var(--color-text-muted);
+    /* 92%: "Log in" (text-muted) keeps 4.5:1 even over a navy section. */
+    --hdr-ground: color-mix(in srgb, var(--color-neutral-0) 92%, transparent);
+    --hdr-solid: var(--color-neutral-0);
+    --hdr-rule: var(--color-border);
+    --hdr-edge: var(--color-border);
+    --hdr-shadow: 0 14px 36px -16px rgb(7 13 38 / 24%);
+    --hdr-panel-hover: var(--color-neutral-50);
+    --hdr-toggle: var(--color-border-strong);
+  }
+
+  .site-header-bar {
+    --hdr-ease: 200ms var(--motion-ease);
+    /* What the mega menus' panels (header-mega.css) are placed against. */
+    position: relative;
+    height: var(--site-header-bar);
+    border: 1px solid var(--hdr-edge);
+    border-radius: 20px;
+    background-color: var(--hdr-ground);
+    box-shadow: var(--hdr-shadow);
+    pointer-events: auto;
+    transition:
+      background-color var(--hdr-ease),
+      border-color var(--hdr-ease),
+      box-shadow var(--hdr-ease);
+  }
+  /* The blur, under the bar's ground. On the bar itself it would make the bar
+     the mega panels' backdrop root, and their own blur would see nothing. */
+  .site-header-bar::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border-radius: inherit;
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    backdrop-filter: blur(14px) saturate(1.4);
+    pointer-events: none;
+  }
+
+  /* Logo: 36px on phones, 40 from md. */
+  .site-header-logo-img {
+    height: 36px;
+    @media (width >= 768px) {
+      height: 40px;
+    }
+  }
+  /* A light page carries both logo files; the theme in force shows its own. */
+  .site-header[data-theme='dark'] .logo-for-light,
+  .site-header[data-theme='light'] .logo-for-dark {
+    display: none;
+  }
+
+  .site-header-link {
+    color: var(--hdr-fg);
+    transition: opacity 150ms;
+  }
+  .site-header-link:hover {
+    opacity: 0.8;
+  }
+  .site-header-muted {
+    color: var(--hdr-muted);
+    transition: opacity 150ms;
+  }
+  .site-header-muted:hover {
+    opacity: 0.8;
+  }
+
+  /* Book a demo: a compact pill, gold over dark (C01), blue over light (C02). */
+  .site-header-demo {
+    border-radius: var(--radius-pill);
+    transition:
+      background-color 150ms,
+      filter 150ms;
+  }
+  .site-header[data-theme='dark'] .site-header-demo {
+    background-color: var(--color-gold-metallic-mid);
+    background-image: linear-gradient(
+      in oklab 160deg,
+      var(--color-gold-metallic-mid) 0%,
+      var(--color-gold-300) 35%,
+      var(--color-gold-100) 50%,
+      var(--color-gold-button-mid) 70%,
+      var(--color-gold-button-edge) 100%
+    );
+    color: var(--color-brand-navy);
+    font-weight: 600;
+  }
+  .site-header[data-theme='dark'] .site-header-demo:hover {
+    filter: brightness(1.06);
+  }
+  .site-header[data-theme='light'] .site-header-demo {
+    background-color: var(--color-brand-blue);
+    color: var(--color-text-on-dark);
+    font-weight: 800;
+  }
+  .site-header[data-theme='light'] .site-header-demo:hover {
+    background-color: var(--color-brand-blue-hover);
+  }
+
+  .site-header-toggle {
+    border-color: var(--hdr-toggle);
+    color: var(--hdr-fg);
+  }
+  .site-header-rule {
+    border-color: var(--hdr-rule);
+  }
+
+  /*
+   * The mobile menu: the whole screen, in the bar's theme, with the bar
+   * floating over it as an outline. While it is open the bar drops its
+   * ground and its blur, and the nav its slide: a filter or a transform
+   * would make that box, not the screen, what a fixed menu fills.
+   */
+  .site-header-menu {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    padding-top: calc(var(--site-header-h) + 12px);
+    background-color: var(--hdr-solid);
+    color: var(--hdr-muted);
+    overscroll-behavior: contain;
+    pointer-events: auto;
+  }
+  .site-header:has(.site-menu[open]) {
+    translate: none;
+    transition: none;
+  }
+  .site-header:has(.site-menu[open]) .site-header-bar {
+    background-color: transparent;
+    box-shadow: none;
+  }
+  .site-header:has(.site-menu[open]) .site-header-bar::before {
+    display: none;
+  }
+  .site-menu-open,
+  .site-menu-open body {
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root,
+    .site-header,
+    .site-header * {
+      transition: none !important;
+    }
+  }
+}

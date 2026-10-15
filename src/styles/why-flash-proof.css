@@ -1,0 +1,35 @@
+/*
+ * why-flash-proof — the /why-flash/ hub's "The receipts." section
+ * (components/why-flash/proof.tsx): the featured accuracy figure, the
+ * figures list, the partner lead line and cards, and the founder line.
+ *
+ * Fade-up (once, 30% in view, <Motion>): each part rises 16px and fades in
+ * over 400ms, starting --wfx-at after its block scrolls in: 99.6% first,
+ * the rows 60ms apart; the lead line, the cards 60ms apart, the founder
+ * line. No count-ups, no printing.
+ *
+ * Hover a partner card (pointer devices): it lifts 4px with a soft shadow
+ * and its border steps to border-strong (a utility on the card), 180ms.
+ * Only Troon is a link.
+ *
+ * Reduced motion, or no JavaScript: no fade and no lift; everything is
+ * simply there.
+ */
+@layer components {
+  .motion[data-anim]:not([data-anim='reset']) .wfx-rise {
+    animation: motion-rise 0.4s ease-out calc(var(--motion-delay) + var(--wfx-at, 0ms)) both;
+  }
+
+  .wfx-card {
+    transition:
+      translate 0.18s ease-out,
+      box-shadow 0.18s ease-out,
+      border-color 0.18s ease-out;
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .wfx-card:hover {
+      translate: 0 -4px;
+      box-shadow: 0 16px 32px rgb(7 13 38 / 0.1);
+    }
+  }
+}

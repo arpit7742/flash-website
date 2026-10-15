@@ -1,0 +1,583 @@
+@import "tailwindcss";
+@import "lenis/dist/lenis.css";
+
+/*
+ * Area stylesheets. Everything visual lives in global CSS: design tokens and
+ * utilities in this file, and one stylesheet per area of the site for what a
+ * Tailwind class cannot express (photo grades, gradient overlays, chart
+ * geometry). Components do not use inline style={...}. The one exception is
+ * the OG images (every opengraph-image.tsx), which Satori renders without any
+ * stylesheet, so inline style is the only styling it accepts.
+ */
+@import "../styles/header.css";
+@import "../styles/header-mega.css";
+@import "../styles/parameter-card.css";
+@import "../styles/hero.css";
+/* Flash Agent conversations, shared by every agent interface (components/agent-conversation/). */
+@import "../styles/agent-conversation.css";
+@import "../styles/home.css";
+/* The home hero's product deck: three glass cards in a stack, one open at a time, and their tabs. */
+@import "../styles/./home-hero-deck.css";
+@import "../styles/home-customers.css";
+/* The home catalogue as photo-strip accordion rows, below md. */
+@import "../styles/home-catalogue-strips.css";
+/* The home hero's lightning: a bolt drawn new for each strike, and the clouds lighting up. */
+@import "../styles/home-hero-lightning.css";
+/* The home page's closing sections, and the footer's scroll-in. */
+@import "../styles/finale.css";
+@import "../styles/./video-player.css";
+@import "../styles/products.css";
+/* The Weather Command Center overview, a guided tour of its screenshot. */
+@import "../styles/wcc-tour.css";
+/* The Weather Command Center's "Why teams run operations…": four tiles that dock into one window. */
+@import "../styles/wcc-features.css";
+/* The Weather Command Center's "Products that pair with…": product layers on one screen. */
+@import "../styles/command-center-layers.css";
+/* The Mobile App hero: four phones that fan in, come forward in turn, and take a push notification. */
+@import "../styles/mobile-app-hero.css";
+/* The API page's "Build with Flash Agent": the request in three languages, and a Run that streams the response. */
+@import "../styles/api-agent-run.css";
+/* The Mobile App's "Products that pair with…": cards with an "On your phone" strip. */
+@import "../styles/mobile-app-pairs.css";
+/* The Mobile App overview, "What does the Flash mobile app do?": a Free / Premium toggle. */
+@import "../styles/mobile-app-tiers.css";
+/* The Mobile App's "What comes with the Flash mobile app?": the four points as lock-screen notifications. */
+@import "../styles/mobile-app-lock-screen.css";
+/* The Lightning page's scroll countdown, "How do teams use the 60 minutes?". */
+@import "../styles/lightning-countdown.css";
+/* The Lightning page's accuracy section, "How accurate is 99.6%, really?". */
+@import "../styles/lightning-accuracy.css";
+/* The Hail page's storm timeline, "Hail tracking or hail prediction?". */
+@import "../styles/hail-comparison.css";
+/* The Hail hero's size-class card: stones to scale, their fall, the class cycle. */
+@import "../styles/hail-hero.css";
+/* The Hail page's "Who moves first when the cell is forecast?" flip cards. */
+@import "../styles/hail-use-cases.css";
+/* The Hail page's press clippings, "What did the trade press say at launch?". */
+@import "../styles/hail-press.css";
+/* The Hail page's Ask Flash cards on a shared time slider, "Ask where the hail will be, and where it was.". */
+@import "../styles/hail-ask.css";
+/* The Hail page's specs on a hailstone cross-section, "What exactly does Predictive Hail deliver?". */
+@import "../styles/hail-specs.css";
+/* The Heat & WBGT hero's WBGT forecast chart. */
+@import "../styles/heat-outlook.css";
+/* The Heat page's "Ask Flash about Thursday's practice." rule card. */
+@import "../styles/heat-agent.css";
+@import "../styles/heat-decision.css";
+/* The Heat & WBGT page's "What does Flash predict for heat?" sparklines. */
+@import "../styles/heat-predicts.css";
+/* The Heat & WBGT page's spec tables and their scroll thermometer, "What exactly does the heat model deliver?". */
+@import "../styles/heat-spec.css";
+/* The Heat page's audiences, "Who plans with the WBGT forecast?". */
+@import "../styles/heat-audiences.css";
+/* The Heat page's state policies, "Which state heat policy applies to you?". */
+@import "../styles/heat-states.css";
+/* The Flash Agent page's "Which tools does Flash Agent work in?": connectors with switches and permissions. */
+@import "../styles/agent-integrations.css";
+/* The Flash API page's "What are the rate limits and SLAs?" icons and banner caption. */
+@import "../styles/api-limits.css";
+@import "../styles/agent.css";
+/* "Ask the question your crew actually asks" on its light stage: the dark app window. */
+@import "../styles/agent-window.css";
+/* The same section's question list beside the window, and the tour's line under the open tab. */
+@import "../styles/agent-tour.css";
+/* The floating Flash Agent widget on every page: a card from md, a bottom bar on phones. */
+@import "../styles/agent-widget.css";
+@import "../styles/agent-flow.css";
+/* The Flash Agent guardrails, one proposed action passing the four in turn. */
+@import "../styles/agent-guardrails.css";
+/* The Flash Agent page's "How does the harness work?" loop. */
+@import "../styles/agent-harness.css";
+/* The Flash API page's "What can you request for a cell?" request builder. */
+@import "../styles/api-parameters.css";
+/* The Flash API endpoints table with its sample-response panel. */
+@import "../styles/api-endpoints.css";
+/* The Flash Agent page's "Is it the same engine as the API?": one engine, two panels, twin values. */
+@import "../styles/agent-engine.css";
+/* The Flash API page's "Which events can a webhook fire on?": events table beside a delivery log. */
+@import "../styles/api-webhooks.css";
+/* The Flash API page's "Where does Flash already plug in?": "Receives:" event chips per connector. */
+@import "../styles/api-integrations.css";
+@import "../styles/about.css";
+@import "../styles/pricing.css";
+/* Pricing's "Which plan fits…": the Best fit for control, the badge that moves between the plan cards, card fade-up. */
+@import "../styles/pricing-plans.css";
+/* Pricing's "What does a sensor-based system cost you": the stacked bars beside the table. */
+@import "../styles/pricing-sensor-cost.css";
+/* Pricing's "Every surface, one subscription.": chips zoom the devices photo, the included items fade up, the catalogue arrow. */
+@import "../styles/pricing-surfaces.css";
+/* The Pricing hero's portfolio card: rows fade in after the headline, "Add a site +" opens a row. */
+@import "../styles/pricing-portfolio.css";
+/* Pricing's "How is your quote calculated?": factor rows fade up, the steppers' number fields. */
+@import "../styles/pricing-quote.css";
+@import "../styles/contact.css";
+@import "../styles/faq.css";
+@import "../styles/press.css";
+@import "../styles/press-testimonials.css";
+@import "../styles/industries.css";
+/* Roofing "Three ways hail costs a roofer…": the warning lead time slider. */
+@import "../styles/industry-lead-time.css";
+/* Construction's "Who hears the lightning alert": the pulse along the chain. */
+@import "../styles/alert-chain.css";
+@import "../styles/lead-bars.css";
+/* Schools "What the NAIA and the Big 12…": fact chips, wave reveal, hover. */
+@import "../styles/industry-card-facts.css";
+/* Schools & Athletics "Who gets the alert": message bubbles on the role cards. */
+@import "../styles/industry-alert-roles.css";
+@import "../styles/industries-cycle.css";
+@import "../styles/industry-sectors.css";
+/* Industry "Where to go next": Learn / Prove / Act cards. */
+@import "../styles/industry-next-steps.css";
+/* Industry "Keep reading" as a draggable row of cards (kr-*). */
+@import "../styles/industry-keep-reading.css";
+/* Construction's "Downtime you can defend": the interactive alert log. */
+@import "../styles/industry-alert-log.css";
+@import "../styles/roof-damage.css";
+/* Schools' "Heat monitoring for schools": the YES / NO table that fills in, cards on a phone. */
+@import "../styles/industry-verdict-table.css";
+/* Roofing's "What a storm day looks like": the swimlane timeline. */
+@import "../styles/industry-storm-lanes.css";
+/* Schools' "A practice day with Flash, hour by hour": the scoreboard that follows the timeline. */
+@import "../styles/industry-scoreboard.css";
+/* The Construction page's "One plan view": live plan, strike loop, legend toggles. */
+@import "../styles/construction-plan.css";
+/* Roofing's "The swath report": live cells, legend filters, ranked canvassing list. */
+@import "../styles/industry-swath.css";
+@import "../styles/why-flash.css";
+/* The home comparison as a swipeable row of cards, below md. */
+@import "../styles/home-comparison-swipe.css";
+@import "../styles/why-flash-clock.css";
+/* Everyone else vs Flash's "How we keep this comparison honest": row badges, Report an error, fade-up. */
+@import "../styles/why-flash-honest.css";
+/* Everyone else vs Flash's "Your options" (Start here badge, card actions) and the Ask, Answer, Act flow. */
+@import "../styles/why-flash-options.css";
+@import "../styles/case-study.css";
+/* Troon's "One forecast, two screens": the same alert chip on both cards, the line between them, card hover. */
+@import "../styles/case-study-screens.css";
+/* Case study: Troon's hero quote card: enters after the buttons, quote mark, lines, then the name. */
+@import "../styles/case-study-quote.css";
+/* Case study: Troon's "What golf operators say": photo focus-in, quote cards fade up, gold line draws. */
+@import "../styles/case-study-testimonials.css";
+/* Case study: Troon's story: sticky At a glance card, chapter markers that fill with the scroll, fade-up. */
+@import "../styles/case-study-story.css";
+/* Case study: Troon's "What is running today": the figures' fade-up, the proof bar's "This case study" tag. */
+@import "../styles/case-study-numbers.css";
+/* Case study: Troon's portfolio map: log entries in time order, pin pulses, entry and pin highlights. */
+@import "../styles/case-study-portfolio-map.css";
+@import "../styles/blog.css";
+@import "../styles/heat-policy.css";
+@import "../styles/legal.css";
+@import "../styles/resources.css";
+/* The Why Flash hub's "Everyone else reacts. Flash knows.": paired rows that check in, mini cards on a phone. */
+@import "../styles/why-flash-hub-compare.css";
+/* Why Flash hub's "For your operation": industry chips, range bars, product rows. */
+@import "../styles/why-flash-operation.css";
+/* Why Flash hub's "The receipts.": featured figure, figures list, partner cards, founder line; fade-up. */
+@import "../styles/why-flash-proof.css";
+@import "../styles/why-flash-kinds.css";
+/* Prediction vs sensors' glossary: Find a term, copy-link anchors, arrival highlight. */
+@import "../styles/why-flash-glossary.css";
+/* Accuracy method: the On this page scrollspy and the sections' shared fade-up. */
+@import "../styles/why-flash-accuracy.css";
+/* Prediction vs sensors vs detection hero figure: Before / During / After, each panel plays its mechanism. */
+@import "../styles/why-flash-tech-figure.css";
+/* Prediction vs sensors vs detection "What does each technology actually measure?": wave reveal, what each sees on hover. */
+@import "../styles/why-flash-measures.css";
+/* Prediction vs sensors vs detection's "What should a safety officer actually run?": the three items add up. */
+@import "../styles/why-flash-stack.css";
+/* Prediction vs sensors vs detection's "How do they compare…?": column spotlight toggles, lead bars, sticky head, phone tabs. */
+@import "../styles/why-flash-compare.css";
+/* "More in Why Flash" on the three Why Flash pages: the series row, its hover and fade-up. */
+@import "../styles/why-flash-series.css";
+
+/*
+ * Design tokens, from the Paper file's token sheet ("00 · Token Sheet").
+ * Names match the design one-to-one, so a class in the design export --
+ * `bg-brand-navy`, `text-body-s`, `tracking-label` -- works here unchanged.
+ *
+ * Gold: `--color-brand-gold` / `--color-gold-500` (#C1A85D) are retired and
+ * deliberately absent. Brand marks and gold headline words use the metallic
+ * gradient; small gold text on dark uses viz-gold; gold on light surfaces
+ * uses gold-on-light.
+ */
+@theme {
+  --color-brand-navy: #070d26;
+  --color-brand-navy-deep: #040818;
+  --color-brand-blue: #003399;
+  --color-brand-blue-hover: #003388;
+  --color-brand-blue-soft: #0b47c4;
+
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #f7f9fc;
+  --color-neutral-100: #eef1f7;
+  --color-neutral-200: #e2e5ea;
+  --color-neutral-300: #cbd2de;
+  --color-neutral-400: #aeb8c7;
+  --color-neutral-500: #8a93a8;
+  --color-neutral-600: #5f6b85;
+  --color-neutral-700: #3a4460;
+  --color-neutral-800: #1c2340;
+  --color-neutral-900: #0b1322;
+
+  --color-alert-clear: #128a5e;
+  --color-alert-advisory: #e6ba2d;
+  --color-alert-watch: #d9722b;
+  --color-alert-warning: #c22e22;
+  --color-alert-info: #0b63ce;
+
+  --color-text: #0b1322;
+  --color-text-muted: #5f6b85;
+  --color-text-subtle: #8a93a8;
+  --color-text-on-dark: #ffffff;
+  --color-text-on-dark-muted: #aeb8c7;
+
+  --color-surface: #ffffff;
+  --color-surface-sunken: #f7f9fc;
+  --color-surface-raised: #eef1f7;
+  --color-border: #e2e5ea;
+  --color-border-strong: #cbd2de;
+  --color-border-on-dark: #1c2340;
+
+  --color-gold-900: #5c4928;
+  --color-gold-300: #d6bd69;
+  --color-gold-100: #f0de7e;
+  --color-gold-metallic-base: #8d6e38;
+  --color-gold-metallic-highlight: #d2be6b;
+  --color-gold-metallic-mid: #b8a059;
+  --color-gold-metallic-shade: #96783f;
+  --color-gold-metallic-glint: #d0b965;
+  --color-gold-metallic-edge: #846632;
+  --color-gold-button-mid: #c6af62;
+  --color-gold-button-edge: #a88e4d;
+  --color-viz-gold: #e6ba2d;
+  --color-gold-on-light: #7f620c;
+
+  /* Hail size, as the live Flash hail product's legend draws it (the 0.5 to
+     2.5 in bar on flashweather.ai's hail images). Hail size only: the alert
+     colours above keep meaning Advisory, Watch and Warning. */
+  --color-hail-trace: #a5c8e8; /* 0.50–0.75 in */
+  --color-hail-severe: #5f8acc; /* 0.75–1.00 in */
+  --color-hail-damaging: #6a4fb8; /* 1.00–1.50 in */
+  --color-hail-large: #8a52b9; /* 1.50–2.00 in */
+  --color-hail-destructive: #ad6fc0; /* 2.00–2.50 in */
+  /* The damaging violet as text on navy: the same hue, light enough to read. */
+  --color-hail-damaging-on-dark: #9b85dd;
+
+  --text-display-xl: 72px;
+  --text-display-xl--line-height: 76px;
+  --text-display-l: 56px;
+  --text-display-l--line-height: 60px;
+  --text-display-m: 44px;
+  --text-display-m--line-height: 50px;
+  --text-h1: 40px;
+  --text-h1--line-height: 46px;
+  --text-h2: 32px;
+  --text-h2--line-height: 38px;
+  --text-h3: 24px;
+  --text-h3--line-height: 32px;
+  --text-h4: 20px;
+  --text-h4--line-height: 28px;
+  --text-body-l: 18px;
+  --text-body-l--line-height: 30px;
+  --text-body: 16px;
+  --text-body--line-height: 26px;
+  --text-body-s: 14px;
+  --text-body-s--line-height: 22px;
+  --text-caption: 13px;
+  --text-caption--line-height: 18px;
+  --text-micro: 12px;
+  --text-micro--line-height: 16px;
+
+  --leading-display-xl: 76px;
+  --leading-display-l: 60px;
+  --leading-display-m: 50px;
+  --leading-h1: 46px;
+  --leading-h2: 38px;
+  --leading-h3: 32px;
+  --leading-h4: 28px;
+  --leading-body-l: 30px;
+  --leading-body: 26px;
+  --leading-body-s: 22px;
+  --leading-caption: 18px;
+  --leading-micro: 16px;
+
+  --tracking-display: -0.02em;
+  --tracking-heading: -0.01em;
+  --tracking-label: 0.14em;
+  --tracking-label-wide: 0.18em;
+
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1440px;
+
+  --container-content: 1200px;
+  --container-narrow: 760px;
+  --container-page: 1440px;
+  --container-panel: 440px;
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 9999px;
+}
+
+/* Fonts come from next/font in the root layout, as CSS variables. */
+@theme inline {
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+  --font-logo: var(--font-orbitron), system-ui, sans-serif;
+}
+
+/*
+ * The metallic gold. Tokens cannot hold gradients, so the stops are colour
+ * tokens and the gradients are utilities. Three uses, three utilities:
+ *   bg-gold-metallic    shapes: the bolt, markers, icon discs
+ *   text-gold-metallic  gold words inside H1/H2 and hero stats
+ *   bg-gold-button      gold buttons (navy text on top)
+ */
+@utility bg-gold-metallic {
+  background-color: var(--color-gold-metallic-mid);
+  background-image: linear-gradient(
+    in oklab 160deg,
+    var(--color-gold-metallic-base) 0%,
+    var(--color-gold-metallic-highlight) 28%,
+    var(--color-gold-100) 40%,
+    var(--color-gold-metallic-mid) 58%,
+    var(--color-gold-metallic-shade) 72%,
+    var(--color-gold-metallic-glint) 88%,
+    var(--color-gold-metallic-edge) 100%
+  );
+}
+
+@utility text-gold-metallic {
+  background-image: linear-gradient(
+    in oklab 160deg,
+    var(--color-gold-metallic-base) 0%,
+    var(--color-gold-metallic-highlight) 28%,
+    var(--color-gold-100) 40%,
+    var(--color-gold-metallic-mid) 58%,
+    var(--color-gold-metallic-shade) 72%,
+    var(--color-gold-metallic-glint) 88%,
+    var(--color-gold-metallic-edge) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  color: transparent;
+}
+
+@utility bg-gold-button {
+  background-color: var(--color-gold-metallic-mid);
+  background-image: linear-gradient(
+    in oklab 160deg,
+    var(--color-gold-metallic-mid) 0%,
+    var(--color-gold-300) 35%,
+    var(--color-gold-100) 50%,
+    var(--color-gold-button-mid) 70%,
+    var(--color-gold-button-edge) 100%
+  );
+}
+
+/* The page gutter every section shares: 96px at 1440, narrowing to 16px. */
+@utility container-page {
+  width: 100%;
+  max-width: var(--container-page);
+  margin-inline: auto;
+  padding-inline: 16px;
+  @media (width >= 768px) {
+    padding-inline: 40px;
+  }
+  @media (width >= 1440px) {
+    padding-inline: 96px;
+  }
+}
+
+/*
+ * Motion (components/motion.tsx). A block with class `motion` gets
+ * data-anim idle -> run when it scrolls in, and data-delay 0, 1, 2... when
+ * several scroll in together. Area stylesheets hang their keyframes off
+ *   .motion[data-anim]:not([data-anim='reset']) .their-class
+ * and delay them by var(--motion-delay). The markup is always the final
+ * frame: no data-anim (no JS, reduced motion) means nothing moves.
+ */
+/* Registered as a time, so a stagger's calc() resolves to one duration that
+   motion.tsx can read back (an unregistered property reads back as text). */
+@property --motion-delay {
+  syntax: '<time>';
+  inherits: true;
+  initial-value: 0s;
+}
+
+@layer components {
+  :root {
+    --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .motion {
+    --motion-stagger: 100ms;
+    --motion-delay: 0ms;
+  }
+  .motion[data-delay='1'] {
+    --motion-delay: var(--motion-stagger);
+  }
+  .motion[data-delay='2'] {
+    --motion-delay: calc(var(--motion-stagger) * 2);
+  }
+  .motion[data-delay='3'] {
+    --motion-delay: calc(var(--motion-stagger) * 3);
+  }
+  .motion[data-delay='4'] {
+    --motion-delay: calc(var(--motion-stagger) * 4);
+  }
+  .motion[data-delay='5'] {
+    --motion-delay: calc(var(--motion-stagger) * 5);
+  }
+  .motion[data-delay='6'] {
+    --motion-delay: calc(var(--motion-stagger) * 6);
+  }
+  .motion[data-delay='7'] {
+    --motion-delay: calc(var(--motion-stagger) * 7);
+  }
+  .motion[data-delay='8'] {
+    --motion-delay: calc(var(--motion-stagger) * 8);
+  }
+  .motion[data-delay='9'] {
+    --motion-delay: calc(var(--motion-stagger) * 9);
+  }
+  .motion[data-delay='10'] {
+    --motion-delay: calc(var(--motion-stagger) * 10);
+  }
+  .motion[data-delay='11'] {
+    --motion-delay: calc(var(--motion-stagger) * 11);
+  }
+  .motion[data-delay='12'] {
+    --motion-delay: calc(var(--motion-stagger) * 12);
+  }
+  .motion[data-delay='13'] {
+    --motion-delay: calc(var(--motion-stagger) * 13);
+  }
+  .motion[data-delay='14'] {
+    --motion-delay: calc(var(--motion-stagger) * 14);
+  }
+  .motion[data-delay='15'] {
+    --motion-delay: calc(var(--motion-stagger) * 15);
+  }
+  .motion[data-anim='idle'] * {
+    animation-play-state: paused !important;
+  }
+  /* !important, as above: an area's own `animation` shorthand is the more
+     specific rule and would otherwise set the loop running again. */
+  .motion:not([data-inview]) .motion-loop {
+    animation-play-state: paused !important;
+  }
+  /* A replay button (data-motion-replay) only makes sense once the block can play. */
+  .motion:not([data-anim]) [data-motion-replay] {
+    display: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .motion * {
+      animation: none !important;
+    }
+  }
+}
+
+/* Shared keyframes. Implicit to-frames resolve to the element's own final state. */
+@keyframes motion-grow-x {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes motion-grow-y {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes motion-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+@keyframes motion-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes motion-pop {
+  40% {
+    transform: scale(1.22);
+  }
+}
+@keyframes motion-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+@keyframes motion-ping {
+  from {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}
+@keyframes motion-light {
+  from {
+    opacity: 0.18;
+  }
+}
+@keyframes motion-tick {
+  0%,
+  16%,
+  100% {
+    transform: scale(1);
+  }
+  6% {
+    transform: scale(1.35);
+  }
+}
+@keyframes motion-pulse {
+  0%,
+  22%,
+  100% {
+    transform: scale(1);
+  }
+  8% {
+    transform: scale(1.3);
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  /* Lenis (components/smooth-scroll.tsx) does the easing while it is on. */
+  html.lenis {
+    scroll-behavior: auto;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+  body {
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-alert-info);
+    outline-offset: 2px;
+  }
+}
